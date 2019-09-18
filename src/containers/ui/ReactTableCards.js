@@ -34,22 +34,22 @@ const handleSelectAll = row => {
 
 const dataTableColumns = [
     {
-        Header: 'Company Name',
-        accessor: 'companyName',
+        Header: 'Project Code',
+        accessor: 'projectCode',
         Cell: props => <p className="list-item-heading">{props.value}</p>,
     },
     {
-        Header: 'Topic Name',
-        accessor: 'topicName',
+        Header: 'Project Name',
+        accessor: 'projectTitle',
         Cell: props => <p className="text-muted">{props.value}</p>,
     },
     {
-        Header: 'Words Count',
-        accessor: 'wordsCount',
+        Header: 'Word Count',
+        accessor: 'wordCount',
         Cell: props => <p className="text-muted">{props.value}</p>,
     },
     {
-        Header: 'Date of Deadline',
+        Header: 'Deadline',
         accessor: 'deadline',
         Cell: props => <p className="text-muted">{props.value}</p>,
     },
@@ -64,13 +64,13 @@ const dataTableColumns = [
         Cell: props => <p className="text-muted">{props.value}</p>,
     },
     {
-        Header: 'Status',
-        accessor: 'status',
+        Header: 'Language',
+        accessor: 'language',
         Cell: props => <p className="text-muted">{props.value}</p>,
     },
     {
-        Header: 'Date Of Allotment',
-        accessor: 'dateOfAllotment',
+        Header: 'Status',
+        accessor: 'status',
         Cell: props => <p className="text-muted">{props.value}</p>,
     },
 ]
@@ -84,8 +84,8 @@ export const ReactTableWithPaginationCard = props => {
             try {
                 let items = await API.get('portal-api', `/projects/${id}`, {
                     queryStringParameters: {
-                        lr: 0,
                         ur: 2,
+                        lr: 2,
                     },
                 })
                 setData(items['Responses']['item-table'])
@@ -124,8 +124,8 @@ export const ReactTableWithScrollableCard = props => {
             try {
                 let items = await API.get('portal-api', `/projects/${id}`, {
                     queryStringParameters: {
-                        lr: 0,
-                        ur: 2,
+                        lr: 1,
+                        ur: 1,
                     },
                 })
                 setData(items['Responses']['item-table'])
@@ -165,7 +165,7 @@ export const ReactTableAdvancedCard = props => {
             try {
                 let items = await API.get('portal-api', `/projects/${id}`, {
                     queryStringParameters: {
-                        lr: 0,
+                        lr: 2,
                         ur: 2,
                     },
                 })
@@ -184,7 +184,7 @@ export const ReactTableAdvancedCard = props => {
                     {/* <IntlMessages id="table.react-advanced" /> */}
                 </CardTitle>
                 <ReactTable
-                    keyField="id"
+                    keyField="itemId"
                     data={data}
                     columns={dataTableColumns}
                     defaultPageSize={5}

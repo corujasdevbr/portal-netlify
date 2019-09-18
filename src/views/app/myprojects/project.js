@@ -154,29 +154,6 @@ class Project extends Component {
                       />
                     </Colxx>
                   </FormGroup>
-
-                  {/* <FormGroup row>
-                    <Label sm={2} className="pt-0">
-                      <IntlMessages id="forms.gender" />
-                    </Label>
-                    <Colxx sm={10}>
-                      <FormGroup check>
-                        <Label check>
-                          <Input type="radio" name="gender" />
-                          <IntlMessages id="forms.male" />
-                        </Label>
-                      </FormGroup>
-                      <FormGroup check>
-                        <Label check>
-                          <Input type="radio" name="gender" />
-                          <IntlMessages id="forms.female" />
-                        </Label>
-                      </FormGroup>
-                      
-                    </Colxx>
-                  </FormGroup> */}
-
-
                   <Button color="primary">
                     <IntlMessages id="forms.submit" />
                   </Button>

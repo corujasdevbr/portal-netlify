@@ -35,7 +35,7 @@ const handleSelectAll = row => {
 const dataTableColumns = [
   {
     Header: "Project Name",
-    accessor: "projectName",
+    accessor: "projectTitle",
     Cell: props => <p className="list-item-heading">{props.value}</p>
   },
   
