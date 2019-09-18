@@ -4,7 +4,7 @@ import {
     fork,
     put,
     takeEvery,
-    actionChannel
+    actionChannel,
 } from 'redux-saga/effects'
 import { Auth } from 'aws-amplify'
 import { LOGIN_USER, REGISTER_USER, LOGOUT_USER } from '../actions'
@@ -33,6 +33,10 @@ function* loginWithEmailPassword({ payload }) {
             localStorage.setItem(
                 'userId',
                 loginUser.idToken.payload['custom:userId']
+            )
+            localStorage.setItem(
+                'userGroup',
+                loginUser.idToken.payload['custom:group']
             )
             yield put(loginUserSuccess(loginUser))
             const access =
@@ -92,6 +96,7 @@ function* logout({ payload }) {
     try {
         yield call(logoutAsync, history)
         localStorage.removeItem('userId')
+        localStorage.removeItem('userGroup')
     } catch (error) {}
 }
 
@@ -111,6 +116,6 @@ export default function* rootSaga() {
     yield all([
         fork(watchLoginUser),
         fork(watchLogoutUser),
-        fork(watchRegisterUser)
+        fork(watchRegisterUser),
     ])
 }

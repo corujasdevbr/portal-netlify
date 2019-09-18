@@ -329,6 +329,8 @@ class Sidebar extends Component {
       viewingParentMenu,
       collapsedMenus
     } = this.state;
+
+    const userGroup = localStorage.getItem("userGroup")
     return (
       <div className="sidebar">
         <div className="main-menu">
@@ -340,6 +342,7 @@ class Sidebar extends Component {
                 {menuItems &&
                   menuItems.map(item => {
                     return (
+                      item.group === userGroup ?
                       <NavItem
                         key={item.id}
                         className={classnames({
@@ -368,7 +371,7 @@ class Sidebar extends Component {
                             <IntlMessages id={item.label} />
                           </NavLink>
                         )}
-                      </NavItem>
+                      </NavItem> :null
                     );
                   })}
               </Nav>
