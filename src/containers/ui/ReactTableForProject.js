@@ -9,7 +9,8 @@ import classnames from 'classnames'
 import IntlMessages from '../../helpers/IntlMessages'
 import DataTablePagination from '../../components/DatatablePagination'
 
-import { API } from 'aws-amplify'
+import { connect } from 'react-redux'
+import { updateTopRightPanelProjectMyProjects } from '../../redux/actions'
 
 const CustomTbodyComponent = props => (
     <div {...props} className={classnames('rt-tbody', props.className || [])}>
@@ -61,25 +62,7 @@ const dataTableColumns = [
 ]
 
 export const ReactTableWithPaginationCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 2,
-                        ur: 2,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-        fetchData()
-    }, [])
+    const data = props.activeProjects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -99,66 +82,8 @@ export const ReactTableWithPaginationCard = props => {
         </Card>
     )
 }
-export const ReactTableWithScrollableCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 2,
-                        ur: 2,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-        fetchData()
-    }, [])
-    return (
-        <Card className="mb-4">
-            <CardBody>
-                <CardTitle>
-                    <IntlMessages id="table.react-scrollable" />
-                </CardTitle>
-                <ReactTable
-                    data={data}
-                    TbodyComponent={CustomTbodyComponent}
-                    columns={dataTableColumns}
-                    defaultPageSize={20}
-                    showPageJump={false}
-                    showPageSizeOptions={false}
-                    showPagination={false}
-                    className={'react-table-fixed-height'}
-                />
-            </CardBody>
-        </Card>
-    )
-}
-export const ReactTableAdvancedCardForProject = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 2,
-                        ur: 2,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-        fetchData()
-    }, [])
+const ReactTableAdvancedCardForProjectConnected = props => {
+    const data = props.activeProjects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -176,12 +101,15 @@ export const ReactTableAdvancedCardForProject = props => {
                     showPageSizeOptions={true}
                     selectAll={selectAll}
                     toggleAll={handleSelectAll}
-                    getTdProps={(state, rowInfo, column, instance) => {
+                    getPaginationProps={() => {
+                        return { activeProjects: props.activeProjects }
+                    }}
+                    getTrProps={(state, rowInfo, column, instance) => {
                         return {
-                            onClick: (e, handleOriginal) => {
-                                if (handleOriginal) {
-                                    handleOriginal()
-                                }
+                            onClick: () => {
+                                props.updateTopRightPanelProjectMyProjects(
+                                    rowInfo.original
+                                )
                             },
                         }
                     }}
@@ -190,3 +118,41 @@ export const ReactTableAdvancedCardForProject = props => {
         </Card>
     )
 }
+
+const mapStateToProps = ({ projects }) => {
+    const { topRightPanelProject } = projects
+    return {
+        topRightPanelProject,
+    }
+}
+
+export const ReactTableAdvancedCardForProject = connect(
+    mapStateToProps,
+    {
+        updateTopRightPanelProjectMyProjects,
+    }
+)(ReactTableAdvancedCardForProjectConnected)
+
+// export const ReactTableWithScrollableCard = props => {
+//     const data = props.activeProjects
+
+//     return (
+//         <Card className="mb-4">
+//             <CardBody>
+//                 <CardTitle>
+//                     <IntlMessages id="table.react-scrollable" />
+//                 </CardTitle>
+//                 <ReactTable
+//                     data={data}
+//                     TbodyComponent={CustomTbodyComponent}
+//                     columns={dataTableColumns}
+//                     defaultPageSize={20}
+//                     showPageJump={false}
+//                     showPageSizeOptions={false}
+//                     showPagination={false}
+//                     className={'react-table-fixed-height'}
+//                 />
+//             </CardBody>
+//         </Card>
+//     )
+// }

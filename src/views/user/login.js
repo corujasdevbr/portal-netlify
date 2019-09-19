@@ -48,7 +48,6 @@ class Login extends Component {
                                 </NavLink>
                                 .
                             </p>
-                            defined or null.
                         </div>
                         <div className="form-side">
                             <NavLink to={`/`} className="white"></NavLink>

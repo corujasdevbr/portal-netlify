@@ -5,6 +5,7 @@ import {
     UPDATE_ACTIVE_PROJECTS,
     UPDATE_TOP_RIGHT_PANEL_PROJECT,
     UPDATE_BOTTOM_RIGHT_PANEL_PROJECT,
+    UPDATE_TOP_RIGHT_PANEL_PROJECT_MYPROJECTS,
 } from '../actions'
 export const getAllotedProjects = () => ({
     type: GET_ALLOTED_PROJECTS,
@@ -28,5 +29,10 @@ export const updateTopRightPanelProject = project => ({
 
 export const updateBottomRightPanelProject = project => ({
     type: UPDATE_BOTTOM_RIGHT_PANEL_PROJECT,
+    payload: project,
+})
+
+export const updateTopRightPanelProjectMyProjects = project => ({
+    type: UPDATE_TOP_RIGHT_PANEL_PROJECT_MYPROJECTS,
     payload: project,
 })

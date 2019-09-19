@@ -65,7 +65,7 @@ const data = [
     },
     {
         id: 'dashboardsBusiness',
-        group: 'business',
+        group: 'client',
         icon: 'iconsminds-shop-4',
         label: 'menu.dashboards',
         to: '/app/business-dashboards',
@@ -73,7 +73,7 @@ const data = [
     },
     {
         id: 'myprojectsBusiness',
-        group: 'business',
+        group: 'client',
         icon: 'iconsminds-air-balloon-1',
         label: 'menu.allprojects',
         to: '/app/business-myprojects',
@@ -81,7 +81,7 @@ const data = [
     },
     {
         id: 'mypaymentsBusiness',
-        group: 'business',
+        group: 'client',
         icon: 'iconsminds-digital-drawing',
         label: 'menu.paymentsandfeedback',
         to: '/app/business-mypayments',
@@ -89,7 +89,7 @@ const data = [
     },
     {
         id: 'profileBusiness',
-        group: 'business',
+        group: 'client',
         icon: 'iconsminds-profile',
         label: 'menu.edit-profile',
         to: '/app/business-profile',
@@ -97,7 +97,7 @@ const data = [
     },
     {
         id: 'addProject',
-        group: 'business',
+        group: 'client',
         icon: 'iconsminds-add-file',
         label: 'menu.add-project',
         to: '/app/myprojects/project',

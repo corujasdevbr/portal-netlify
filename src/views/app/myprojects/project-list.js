@@ -8,7 +8,13 @@ import RightPanelDataForProject from '../../../containers/dashboards/RightPanelD
 
 import { ReactTableAdvancedCardForProject } from '../../../containers/ui/ReactTableForProject'
 
+import { connect } from 'react-redux'
+import { getActiveProjects } from '../../../redux/actions'
+
 class ProjectListPages extends Component {
+    componentDidMount() {
+        this.props.getActiveProjects()
+    }
     render() {
         const { messages } = this.props.intl
         return (
@@ -24,10 +30,15 @@ class ProjectListPages extends Component {
                 </Row>
                 <Row className="mb-5">
                     <Colxx lg="12" xl="8" className="mb-4">
-                        <ReactTableAdvancedCardForProject />
+                        <ReactTableAdvancedCardForProject
+                            activeProjects={this.props.activeProjects}
+                        />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
                         <RightPanelDataForProject
+                            rightPanelProject={
+                                this.props.topRightPanelProjectMyProjects
+                            }
                             listData={this.props.rowInfo}
                         />
                     </Colxx>
@@ -36,4 +47,20 @@ class ProjectListPages extends Component {
         )
     }
 }
-export default injectIntl(ProjectListPages)
+
+const mapStateToProps = ({ projects }) => {
+    const { activeProjects, topRightPanelProjectMyProjects } = projects
+    return {
+        activeProjects,
+        topRightPanelProjectMyProjects,
+    }
+}
+
+export default injectIntl(
+    connect(
+        mapStateToProps,
+        {
+            getActiveProjects,
+        }
+    )(ProjectListPages)
+)
