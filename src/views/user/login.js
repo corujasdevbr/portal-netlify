@@ -11,7 +11,7 @@ class Login extends Component {
         super(props)
         this.state = {
             email: '',
-            password: ''
+            password: '',
         }
     }
     onUserLogin() {
@@ -23,7 +23,7 @@ class Login extends Component {
     handleChange = event => {
         this.setState({
             ...this.state,
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value,
         })
     }
 
@@ -48,6 +48,7 @@ class Login extends Component {
                                 </NavLink>
                                 .
                             </p>
+                            defined or null.
                         </div>
                         <div className="form-side">
                             <NavLink to={`/`} className="white"></NavLink>
@@ -102,6 +103,6 @@ const mapStateToProps = ({ authUser }) => {
 export default connect(
     mapStateToProps,
     {
-        loginUser
+        loginUser,
     }
 )(Login)

@@ -9,8 +9,6 @@ import classnames from 'classnames'
 import IntlMessages from '../../helpers/IntlMessages'
 import DataTablePagination from '../../components/DatatablePagination'
 
-import { API } from 'aws-amplify'
-
 const CustomTbodyComponent = props => (
     <div {...props} className={classnames('rt-tbody', props.className || [])}>
         <PerfectScrollbar options={{ suppressScrollX: true }}>
@@ -76,26 +74,7 @@ const dataTableColumns = [
 ]
 
 export const ReactTableWithPaginationCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        ur: 2,
-                        lr: 2,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-
-        fetchData()
-    }, [])
+    const data = props.activeProjects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -115,68 +94,49 @@ export const ReactTableWithPaginationCard = props => {
         </Card>
     )
 }
-export const ReactTableWithScrollableCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
+// export const ReactTableWithScrollableCard = props => {
+//     const [data, setData] = useState([])
+//     useEffect(() => {
+//         const id = localStorage.getItem('userId')
 
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 1,
-                        ur: 1,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
+//         async function fetchData() {
+//             try {
+//                 let items = await API.get('portal-api', `/projects/${id}`, {
+//                     queryStringParameters: {
+//                         lr: 1,
+//                         ur: 1,
+//                     },
+//                 })
+//                 setData(items['Responses']['item-table'])
+//             } catch (error) {
+//                 console.log({ error: error.response })
+//             }
+//         }
 
-        fetchData()
-    }, [])
-    return (
-        <Card className="mb-4">
-            <CardBody>
-                <CardTitle>
-                    <IntlMessages id="table.react-scrollable" />
-                </CardTitle>
-                <ReactTable
-                    data={data}
-                    TbodyComponent={CustomTbodyComponent}
-                    columns={dataTableColumns}
-                    defaultPageSize={20}
-                    showPageJump={false}
-                    showPageSizeOptions={false}
-                    showPagination={false}
-                    className={'react-table-fixed-height'}
-                />
-            </CardBody>
-        </Card>
-    )
-}
+//         fetchData()
+//     }, [])
+//     return (
+//         <Card className="mb-4">
+//             <CardBody>
+//                 <CardTitle>
+//                     <IntlMessages id="table.react-scrollable" />
+//                 </CardTitle>
+//                 <ReactTable
+//                     data={data}
+//                     TbodyComponent={CustomTbodyComponent}
+//                     columns={dataTableColumns}
+//                     defaultPageSize={20}
+//                     showPageJump={false}
+//                     showPageSizeOptions={false}
+//                     showPagination={false}
+//                     className={'react-table-fixed-height'}
+//                 />
+//             </CardBody>
+//         </Card>
+//     )
+// }
 export const ReactTableAdvancedCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 2,
-                        ur: 2,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-
-        fetchData()
-    }, [])
+    const data = props.activeProjects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -194,22 +154,12 @@ export const ReactTableAdvancedCard = props => {
                     showPageSizeOptions={true}
                     selectAll={selectAll}
                     toggleAll={handleSelectAll}
+                    getPaginationProps={() => {
+                        return { activeProjects: props.activeProjects }
+                    }}
                     getTdProps={(state, rowInfo, column, instance) => {
                         return {
                             onClick: (e, handleOriginal) => {
-                                // console.log('A Td Element was clicked!')
-                                // console.log('it produced this event:', e)
-                                // console.log('It was in this column:', column)
-                                // console.log('It was in this row:', rowInfo)
-                                console.log(rowInfo.row)
-                                //this.setState({rowData : rowInfo.original})
-                                //console.log('It was in this table instance:', instance)
-
-                                // IMPORTANT! React-Table uses onClick internally to trigger
-                                // events like expanding SubComponents and pivots.
-                                // By default a custom 'onClick' handler will override this functionality.
-                                // If you want to fire the original onClick handler, call the
-                                // 'handleOriginal' function.
                                 if (handleOriginal) {
                                     handleOriginal()
                                 }

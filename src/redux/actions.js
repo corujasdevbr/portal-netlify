@@ -15,6 +15,13 @@ export const MENU_CLICK_MOBILE_MENU = 'MENU_CLICK_MOBILE_MENU'
 export const MENU_CHANGE_DEFAULT_CLASSES = 'MENU_CHANGE_DEFAULT_CLASSES'
 export const MENU_CHANGE_HAS_SUB_ITEM_STATUS = 'MENU_CHANGE_HAS_SUB_ITEM_STATUS'
 
+/* PROJECTS */
+export const GET_ALLOTED_PROJECTS = 'GET_ALLOTED_PROJECTS'
+export const UPDATE_ALLOTED_PROJECTS = 'UPDATE_ALLOTED_PROJECTS'
+export const GET_ACTIVE_PROJECTS = 'GET_ACTIVE_PROJECTS'
+export const UPDATE_ACTIVE_PROJECTS = 'UPDATE_ACTIVE_PROJECTS'
+
 export * from './menu/actions'
 export * from './settings/actions'
 export * from './auth/actions'
+export * from './projects/actions'

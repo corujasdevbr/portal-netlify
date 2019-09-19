@@ -9,8 +9,6 @@ import classnames from 'classnames'
 import IntlMessages from '../../helpers/IntlMessages'
 import DataTablePagination from '../../components/DatatablePagination'
 
-import { API } from 'aws-amplify'
-
 const CustomTbodyComponent = props => (
     <div {...props} className={classnames('rt-tbody', props.className || [])}>
         <PerfectScrollbar options={{ suppressScrollX: true }}>
@@ -72,25 +70,7 @@ const dataTableColumns = [
 ]
 
 export const ReactTableWithPaginationCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 1,
-                        ur: 1,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-        fetchData()
-    }, [])
+    const data = props.allotedProjects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -110,66 +90,48 @@ export const ReactTableWithPaginationCard = props => {
         </Card>
     )
 }
-export const ReactTableWithScrollableCard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
+// export const ReactTableWithScrollableCard = props => {
+//     const [data, setData] = useState([])
+//     useEffect(() => {
+//         const id = localStorage.getItem('userId')
 
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 1,
-                        ur: 1,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-        fetchData()
-    }, [])
-    return (
-        <Card className="mb-4">
-            <CardBody>
-                <CardTitle>
-                    <IntlMessages id="table.react-scrollable" />
-                </CardTitle>
-                <ReactTable
-                    data={data}
-                    TbodyComponent={CustomTbodyComponent}
-                    columns={dataTableColumns}
-                    defaultPageSize={20}
-                    showPageJump={false}
-                    showPageSizeOptions={false}
-                    showPagination={false}
-                    className={'react-table-fixed-height'}
-                />
-            </CardBody>
-        </Card>
-    )
-}
+//         async function fetchData() {
+//             try {
+//                 let items = await API.get('portal-api', `/projects/${id}`, {
+//                     queryStringParameters: {
+//                         lr: 1,
+//                         ur: 1,
+//                     },
+//                 })
+//                 setData(items['Responses']['item-table'])
+//             } catch (error) {
+//                 console.log({ error: error.response })
+//             }
+//         }
+//         fetchData()
+//     }, [])
+//     return (
+//         <Card className="mb-4">
+//             <CardBody>
+//                 <CardTitle>
+//                     <IntlMessages id="table.react-scrollable" />
+//                 </CardTitle>
+//                 <ReactTable
+//                     data={data}
+//                     TbodyComponent={CustomTbodyComponent}
+//                     columns={dataTableColumns}
+//                     defaultPageSize={20}
+//                     showPageJump={false}
+//                     showPageSizeOptions={false}
+//                     showPagination={false}
+//                     className={'react-table-fixed-height'}
+//                 />
+//             </CardBody>
+//         </Card>
+//     )
+// }
 export const ReactTableAdvancedCardForDashboard = props => {
-    const [data, setData] = useState([])
-    useEffect(() => {
-        const id = localStorage.getItem('userId')
-
-        async function fetchData() {
-            try {
-                let items = await API.get('portal-api', `/projects/${id}`, {
-                    queryStringParameters: {
-                        lr: 1,
-                        ur: 1,
-                    },
-                })
-                setData(items['Responses']['item-table'])
-            } catch (error) {
-                console.log({ error: error.response })
-            }
-        }
-        fetchData()
-    }, [])
+    const data = props.allotedProjects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -187,6 +149,9 @@ export const ReactTableAdvancedCardForDashboard = props => {
                     showPageSizeOptions={true}
                     selectAll={selectAll}
                     toggleAll={handleSelectAll}
+                    getPaginationProps={() => {
+                        return { allotedProjects: props.allotedProjects }
+                    }}
                     getTdProps={(state, rowInfo, column, instance) => {
                         return {
                             onClick: (e, handleOriginal) => {

@@ -3,12 +3,12 @@ import {
     LOGIN_USER_SUCCESS,
     REGISTER_USER,
     REGISTER_USER_SUCCESS,
-    LOGOUT_USER
+    LOGOUT_USER,
 } from '../actions'
 
 const INIT_STATE = {
     user: localStorage.getItem('userId'),
-    loading: false
+    loading: false,
 }
 
 export default (state = INIT_STATE, action) => {
