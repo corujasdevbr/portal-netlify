@@ -9,6 +9,9 @@ import classnames from 'classnames'
 import IntlMessages from '../../helpers/IntlMessages'
 import DataTablePagination from '../../components/DatatablePagination'
 
+import { connect } from 'react-redux'
+import { updateBottomRightPanelProject } from '../../redux/actions'
+
 const CustomTbodyComponent = props => (
     <div {...props} className={classnames('rt-tbody', props.className || [])}>
         <PerfectScrollbar options={{ suppressScrollX: true }}>
@@ -94,6 +97,58 @@ export const ReactTableWithPaginationCard = props => {
         </Card>
     )
 }
+
+const ReactTableAdvancedCardConnected = props => {
+    const data = props.activeProjects
+    return (
+        <Card className="mb-4">
+            <CardBody>
+                <CardTitle>
+                    {/* <IntlMessages id="table.react-advanced" /> */}
+                </CardTitle>
+                <ReactTable
+                    keyField="itemId"
+                    data={data}
+                    columns={dataTableColumns}
+                    defaultPageSize={5}
+                    filterable={true}
+                    showPageJump={true}
+                    PaginationComponent={DataTablePagination}
+                    showPageSizeOptions={true}
+                    selectAll={selectAll}
+                    toggleAll={handleSelectAll}
+                    getPaginationProps={() => {
+                        return { activeProjects: props.activeProjects }
+                    }}
+                    getTrProps={(state, rowInfo, column, instance) => {
+                        return {
+                            onClick: () => {
+                                props.updateBottomRightPanelProject(
+                                    rowInfo.original
+                                )
+                            },
+                        }
+                    }}
+                />
+            </CardBody>
+        </Card>
+    )
+}
+
+const mapStateToProps = ({ projects }) => {
+    const { bottomRightPanelProject } = projects
+    return {
+        bottomRightPanelProject,
+    }
+}
+
+export const ReactTableAdvancedCard = connect(
+    mapStateToProps,
+    {
+        updateBottomRightPanelProject,
+    }
+)(ReactTableAdvancedCardConnected)
+
 // export const ReactTableWithScrollableCard = props => {
 //     const [data, setData] = useState([])
 //     useEffect(() => {
@@ -135,39 +190,3 @@ export const ReactTableWithPaginationCard = props => {
 //         </Card>
 //     )
 // }
-export const ReactTableAdvancedCard = props => {
-    const data = props.activeProjects
-    return (
-        <Card className="mb-4">
-            <CardBody>
-                <CardTitle>
-                    {/* <IntlMessages id="table.react-advanced" /> */}
-                </CardTitle>
-                <ReactTable
-                    keyField="itemId"
-                    data={data}
-                    columns={dataTableColumns}
-                    defaultPageSize={5}
-                    filterable={true}
-                    showPageJump={true}
-                    PaginationComponent={DataTablePagination}
-                    showPageSizeOptions={true}
-                    selectAll={selectAll}
-                    toggleAll={handleSelectAll}
-                    getPaginationProps={() => {
-                        return { activeProjects: props.activeProjects }
-                    }}
-                    getTdProps={(state, rowInfo, column, instance) => {
-                        return {
-                            onClick: (e, handleOriginal) => {
-                                if (handleOriginal) {
-                                    handleOriginal()
-                                }
-                            },
-                        }
-                    }}
-                />
-            </CardBody>
-        </Card>
-    )
-}

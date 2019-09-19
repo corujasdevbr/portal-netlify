@@ -3,11 +3,15 @@ import {
     GET_ACTIVE_PROJECTS,
     UPDATE_ACTIVE_PROJECTS,
     UPDATE_ALLOTED_PROJECTS,
+    UPDATE_TOP_RIGHT_PANEL_PROJECT,
+    UPDATE_BOTTOM_RIGHT_PANEL_PROJECT,
 } from '../actions'
 
 const INIT_STATE = {
     activeProjects: [],
     allotedProjects: [],
+    topRightPanelProject: [],
+    bottomRightPanelProject: [],
 }
 
 export default (state = INIT_STATE, action) => {
@@ -20,6 +24,10 @@ export default (state = INIT_STATE, action) => {
             return { ...state }
         case UPDATE_ACTIVE_PROJECTS:
             return { ...state, activeProjects: action.payload }
+        case UPDATE_TOP_RIGHT_PANEL_PROJECT:
+            return { ...state, topRightPanelProject: [action.payload] }
+        case UPDATE_BOTTOM_RIGHT_PANEL_PROJECT:
+            return { ...state, bottomRightPanelProject: [action.payload] }
         default:
             return { ...state }
     }

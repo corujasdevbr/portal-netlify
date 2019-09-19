@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import IntlMessages from '../../helpers/IntlMessages'
-import data from '../../data/products'
+// import data from '../../data/products'
+
 import {
     Button,
     ButtonGroup,
@@ -17,6 +18,7 @@ import {
     CardTitle,
 } from 'reactstrap'
 export default function RightPanelData(props) {
+    const data = props.rightPanelProject
     return (
         <Card>
             <div className="position-absolute card-top-buttons">
@@ -35,20 +37,27 @@ export default function RightPanelData(props) {
                             wheelPropagation: false,
                         }}
                     >
-                        <div className="pl-3 pt-2 pr-2 pb-2">
-                            {'Company Name'}
-                            <p className="list-item-heading">
-                                {data[0].companyName}
-                            </p>
-                            {'Topic Name'}
-                            <p className="list-item-heading">
-                                {data[0].topicName}
-                            </p>
-                            {'Project Brief'}{' '}
-                            <p className="list-item-heading">
-                                {data[0].projectBrief}
-                            </p>
-                        </div>
+                        {/* check if object is empty */}
+                        {data.length === 0 ? (
+                            <div className="pl-3 pt-2 pr-2 pb-2">
+                                {'Select a project'}
+                            </div>
+                        ) : (
+                            <div className="pl-3 pt-2 pr-2 pb-2">
+                                {'Company Name'}
+                                <p className="list-item-heading">
+                                    {data[0].companyName}
+                                </p>
+                                {'Topic Name'}
+                                <p className="list-item-heading">
+                                    {data[0].topicName}
+                                </p>
+                                {'Project Brief'}{' '}
+                                <p className="list-item-heading">
+                                    {data[0].projectBrief}
+                                </p>
+                            </div>
+                        )}
                         <Button color="info" className="mb-2">
                             <IntlMessages id="button.approve" />
                         </Button>{' '}

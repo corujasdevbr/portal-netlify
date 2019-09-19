@@ -9,6 +9,9 @@ import classnames from 'classnames'
 import IntlMessages from '../../helpers/IntlMessages'
 import DataTablePagination from '../../components/DatatablePagination'
 
+import { connect } from 'react-redux'
+import { updateTopRightPanelProject } from '../../redux/actions'
+
 const CustomTbodyComponent = props => (
     <div {...props} className={classnames('rt-tbody', props.className || [])}>
         <PerfectScrollbar options={{ suppressScrollX: true }}>
@@ -130,7 +133,7 @@ export const ReactTableWithPaginationCard = props => {
 //         </Card>
 //     )
 // }
-export const ReactTableAdvancedCardForDashboard = props => {
+export const ReactTableAdvancedCardForDashboardConnected = props => {
     const data = props.allotedProjects
     return (
         <Card className="mb-4">
@@ -152,12 +155,12 @@ export const ReactTableAdvancedCardForDashboard = props => {
                     getPaginationProps={() => {
                         return { allotedProjects: props.allotedProjects }
                     }}
-                    getTdProps={(state, rowInfo, column, instance) => {
+                    getTrProps={(state, rowInfo, column, instance) => {
                         return {
-                            onClick: (e, handleOriginal) => {
-                                if (handleOriginal) {
-                                    handleOriginal()
-                                }
+                            onClick: () => {
+                                props.updateTopRightPanelProject(
+                                    rowInfo.original
+                                )
                             },
                         }
                     }}
@@ -166,3 +169,17 @@ export const ReactTableAdvancedCardForDashboard = props => {
         </Card>
     )
 }
+
+const mapStateToProps = ({ projects }) => {
+    const { topRightPanelProject } = projects
+    return {
+        topRightPanelProject,
+    }
+}
+
+export const ReactTableAdvancedCardForDashboard = connect(
+    mapStateToProps,
+    {
+        updateTopRightPanelProject,
+    }
+)(ReactTableAdvancedCardForDashboardConnected)

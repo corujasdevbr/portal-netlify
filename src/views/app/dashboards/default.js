@@ -44,7 +44,10 @@ class DefaultDashboard extends Component {
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
-                        <RightPanelData listData={this.props.rowInfo} />
+                        <RightPanelData
+                            rightPanelProject={this.props.topRightPanelProject}
+                            listData={this.props.rowInfo}
+                        />
                     </Colxx>
                 </Row>
                 <Row className="mb-5">
@@ -54,7 +57,12 @@ class DefaultDashboard extends Component {
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
-                        <RightPanelData listData={this.props.rowInfo} />
+                        <RightPanelData
+                            rightPanelProject={
+                                this.props.bottomRightPanelProject
+                            }
+                            listData={this.props.rowInfo}
+                        />
                     </Colxx>
                 </Row>
             </Fragment>
@@ -63,14 +71,26 @@ class DefaultDashboard extends Component {
 }
 
 const mapStateToProps = ({ projects }) => {
-    const { allotedProjects, activeProjects } = projects
-    return { allotedProjects, activeProjects }
+    const {
+        allotedProjects,
+        activeProjects,
+        topRightPanelProject,
+        bottomRightPanelProject,
+    } = projects
+    return {
+        allotedProjects,
+        activeProjects,
+        topRightPanelProject,
+        bottomRightPanelProject,
+    }
 }
 
 export default injectIntl(
     connect(
         mapStateToProps,
-        { getAllotedProjects, getActiveProjects }
+        {
+            getAllotedProjects,
+            getActiveProjects,
+        }
     )(DefaultDashboard)
 )
-// export default injectIntl(DefaultDashboard)
