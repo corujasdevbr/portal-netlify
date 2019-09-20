@@ -13,6 +13,7 @@ import {
     getAllotedProjects,
     getActiveProjects,
     updateTopRightPanelProject,
+    updateBottomRightPanelProject,
 } from '../../../redux/actions'
 
 class DefaultDashboard extends Component {
@@ -54,7 +55,10 @@ class DefaultDashboard extends Component {
                                 this.props.updateTopRightPanelProject
                             }
                             getActiveProjects={this.props.getActiveProjects}
+                            getAllotedProjects={this.props.getAllotedProjects}
                             listData={this.props.rowInfo}
+                            leftButtonText="accept"
+                            rightButtonText="reject"
                         />
                     </Colxx>
                 </Row>
@@ -69,7 +73,14 @@ class DefaultDashboard extends Component {
                             rightPanelProject={
                                 this.props.bottomRightPanelProject
                             }
+                            getActiveProjects={this.props.getActiveProjects}
+                            getAllotedProjects={this.props.getAllotedProjects}
+                            updateBottomRightPanelProject={
+                                this.props.updateBottomRightPanelProject
+                            }
                             listData={this.props.rowInfo}
+                            leftButtonText="submit"
+                            rightButtonText="none"
                         />
                     </Colxx>
                 </Row>
@@ -100,6 +111,7 @@ export default injectIntl(
             getAllotedProjects,
             getActiveProjects,
             updateTopRightPanelProject,
+            updateBottomRightPanelProject,
         }
     )(DefaultDashboard)
 )

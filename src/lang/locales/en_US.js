@@ -397,6 +397,7 @@ module.exports = {
   "button.warning": "Warning",
   "button.info": "Info",
   "button.approve":"Approve",
+  "button.accept": "Accept",
   "button.reject":"Reject",
   "button.pass":"Pass",
   "button.paid":"Paid",
