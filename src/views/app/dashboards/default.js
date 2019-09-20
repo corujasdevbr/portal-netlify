@@ -40,7 +40,7 @@ class DefaultDashboard extends Component {
                 <Row className="mb-5">
                     <Colxx lg="12" xl="8" className="mb-4">
                         <ReactTableAdvancedCardForDashboard
-                            allotedProjects={this.props.allotedProjects}
+                            projects={this.props.allotedProjects}
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
@@ -53,7 +53,7 @@ class DefaultDashboard extends Component {
                 <Row className="mb-5">
                     <Colxx lg="12" xl="8" className="mb-4">
                         <ReactTableAdvancedCard
-                            activeProjects={this.props.activeProjects}
+                            projects={this.props.activeProjects}
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
