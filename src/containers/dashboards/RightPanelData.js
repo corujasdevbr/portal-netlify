@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import IntlMessages from '../../helpers/IntlMessages'
-// import data from '../../data/products'
+import { API } from 'aws-amplify'
 
 import {
     Button,
@@ -17,8 +17,47 @@ import {
     CardBody,
     CardTitle,
 } from 'reactstrap'
+
 export default function RightPanelData(props) {
     const data = props.rightPanelProject
+
+    const approveProject = () => {
+        const userId = localStorage.getItem('userId')
+        API.put('portal-api', `/users/${userId}/update`, {
+            body: {
+                role: localStorage.getItem('userGroup'),
+                status: parseInt('2'),
+                projectId: data[0].itemId,
+            },
+        })
+            .then(response => {
+                console.log('TCL: RightPanelData -> response', response)
+                props.updateTopRightPanelProject([])
+                props.getActiveProjects()
+            })
+            .catch(error => {
+                console.log(error.response)
+                alert('Operation failed. Please try again.')
+            })
+    }
+    const rejectProject = async () => {
+        const userId = localStorage.getItem('userId')
+        API.put('portal-api', `/users/${userId}/update`, {
+            body: {
+                role: localStorage.getItem('userGroup'),
+                status: parseInt('0'),
+                projectId: data[0].itemId,
+            },
+        })
+            .then(response => {
+                console.log('TCL: RightPanelData -> response', response)
+                props.updateTopRightPanelProject([])
+            })
+            .catch(error => {
+                console.log(error.response)
+                alert('Operation failed. Please try again.')
+            })
+    }
     return (
         <Card>
             <div className="position-absolute card-top-buttons">
@@ -58,10 +97,18 @@ export default function RightPanelData(props) {
                                 </p>
                             </div>
                         )}
-                        <Button color="info" className="mb-2">
+                        <Button
+                            color="info"
+                            className="mb-2"
+                            onClick={approveProject}
+                        >
                             <IntlMessages id="button.approve" />
                         </Button>{' '}
-                        <Button color="danger" className="mb-2">
+                        <Button
+                            color="danger"
+                            className="mb-2"
+                            onClick={rejectProject}
+                        >
                             <IntlMessages id="button.pass" />
                         </Button>{' '}
                     </PerfectScrollbar>

@@ -9,7 +9,11 @@ import { ReactTableAdvancedCard } from '../../../containers/ui/ReactTableCards'
 import { ReactTableAdvancedCardForDashboard } from '../../../containers/ui/ReactTableCardsForDashboard'
 
 import { connect } from 'react-redux'
-import { getAllotedProjects, getActiveProjects } from '../../../redux/actions'
+import {
+    getAllotedProjects,
+    getActiveProjects,
+    updateTopRightPanelProject,
+} from '../../../redux/actions'
 
 class DefaultDashboard extends Component {
     constructor(props) {
@@ -46,6 +50,10 @@ class DefaultDashboard extends Component {
                     <Colxx lg="12" xl="4" className="mb-4">
                         <RightPanelData
                             rightPanelProject={this.props.topRightPanelProject}
+                            updateTopRightPanelProject={
+                                this.props.updateTopRightPanelProject
+                            }
+                            getActiveProjects={this.props.getActiveProjects}
                             listData={this.props.rowInfo}
                         />
                     </Colxx>
@@ -91,6 +99,7 @@ export default injectIntl(
         {
             getAllotedProjects,
             getActiveProjects,
+            updateTopRightPanelProject,
         }
     )(DefaultDashboard)
 )
