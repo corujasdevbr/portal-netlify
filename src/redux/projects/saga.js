@@ -26,8 +26,17 @@ function* fetchAllotedProjects() {
 }
 
 function* fetchActiveProjects() {
-    const lr = 2
-    const ur = 2
+    const userGroup = localStorage.getItem('userGroup')
+    let lr = 0
+    let ur = 0
+    if (userGroup === 'editor') {
+        lr = 4
+        ur = 4
+    } else if (userGroup === 'writer') {
+        lr = 2
+        ur = 2
+    }
+
     try {
         const projects = yield call(getProjectsAsync, lr, ur)
         yield put(updateActiveProjects(projects['Responses']['item-table']))

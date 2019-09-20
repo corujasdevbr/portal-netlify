@@ -77,7 +77,7 @@ const dataTableColumns = [
 ]
 
 export const ReactTableWithPaginationCard = props => {
-    const data = props.activeProjects
+    const data = props.projects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -99,7 +99,7 @@ export const ReactTableWithPaginationCard = props => {
 }
 
 const ReactTableAdvancedCardConnected = props => {
-    const data = props.activeProjects
+    const data = props.projects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -118,7 +118,7 @@ const ReactTableAdvancedCardConnected = props => {
                     selectAll={selectAll}
                     toggleAll={handleSelectAll}
                     getPaginationProps={() => {
-                        return { activeProjects: props.activeProjects }
+                        return { projects: props.projects }
                     }}
                     getTrProps={(state, rowInfo, column, instance) => {
                         return {

@@ -31,7 +31,7 @@ class ProjectListPages extends Component {
                 <Row className="mb-5">
                     <Colxx lg="12" xl="8" className="mb-4">
                         <ReactTableAdvancedCardForProject
-                            activeProjects={this.props.activeProjects}
+                            projects={this.props.activeProjects}
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
