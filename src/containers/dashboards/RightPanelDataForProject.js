@@ -1,5 +1,4 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import IntlMessages from '../../helpers/IntlMessages'
 import {
@@ -16,11 +15,16 @@ import {
     CardTitle,
 } from 'reactstrap'
 
-import { API } from 'aws-amplify'
+import { API, Storage } from 'aws-amplify'
 export default function RightPanelDataForProject(props) {
+    const [uploadFile, setUploadFile] = useState(null)
     const data = props.rightPanelProject
 
-    const approveProject = () => {
+    const onFileUpload = event => {
+        setUploadFile(event.target.files[0])
+    }
+
+    const approveProject = async () => {
         let operation = ''
         if (data[0].status === 1) {
             operation = 'acceptAllotedProject'
@@ -34,23 +38,34 @@ export default function RightPanelDataForProject(props) {
         } else if (operation === 'submitProject') {
             targetStatus = 3
         }
-        API.put('portal-api', `/users/${userId}/update`, {
-            body: {
-                role: localStorage.getItem('userGroup'),
-                status: parseInt(targetStatus),
-                projectId: data[0].itemId,
-            },
-        })
-            .then(() => {
-                if (operation === 'submitProject') {
-                    props.updateTopRightPanelProject([])
-                }
-                props.getActiveProjects()
+
+        try {
+            const uploadFileName = `${Date.now()}`
+            const stored = await Storage.vault.put(uploadFileName, uploadFile, {
+                contentType: uploadFile.type,
             })
-            .catch(error => {
-                console.log(error)
-                alert('Operation failed. Please try again.')
+            const fileUrl = await Storage.get(stored.key, {
+                level: 'private',
             })
+            await API.put('portal-api', `/users/${userId}/projects/fileUrl`, {
+                body: {
+                    projectId: data[0].itemId,
+                    url: fileUrl,
+                },
+            })
+            await API.put('portal-api', `/users/${userId}/update`, {
+                body: {
+                    role: localStorage.getItem('userGroup'),
+                    status: parseInt(targetStatus),
+                    projectId: data[0].itemId,
+                },
+            })
+            props.updatePanelProject([])
+            props.getActiveProjects()
+        } catch (error) {
+            console.log(error.response)
+            alert('Operation failed. Please try again.')
+        }
     }
     const rejectProject = async () => {
         const userId = localStorage.getItem('userId')
@@ -66,7 +81,7 @@ export default function RightPanelDataForProject(props) {
             },
         })
             .then(response => {
-                props.updateTopRightPanelProject([])
+                props.updatePanelProject([])
             })
             .catch(error => {
                 console.log(error.response)
@@ -112,6 +127,11 @@ export default function RightPanelDataForProject(props) {
                                 </p>
                             </div>
                         )}
+                        <input
+                            type="file"
+                            name="file"
+                            onChange={onFileUpload}
+                        />
                         {props.leftButtonText === 'none' ? null : (
                             <Button
                                 color="info"
@@ -120,17 +140,6 @@ export default function RightPanelDataForProject(props) {
                             >
                                 <IntlMessages
                                     id={`button.${props.leftButtonText}`}
-                                />
-                            </Button>
-                        )}
-                        {props.rightButtonText === 'none' ? null : (
-                            <Button
-                                color="danger"
-                                className="mb-2"
-                                onClick={rejectProject}
-                            >
-                                <IntlMessages
-                                    id={`button.${props.rightButtonText}`}
                                 />
                             </Button>
                         )}

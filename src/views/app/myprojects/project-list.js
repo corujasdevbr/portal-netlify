@@ -11,7 +11,7 @@ import { ReactTableAdvancedCardForProject } from '../../../containers/ui/ReactTa
 import { connect } from 'react-redux'
 import {
     getActiveProjects,
-    updateTopRightPanelProject,
+    updateTopRightPanelProjectMyProjects,
 } from '../../../redux/actions'
 
 class ProjectListPages extends Component {
@@ -46,8 +46,8 @@ class ProjectListPages extends Component {
                             listData={this.props.rowInfo}
                             leftButtonText="submit"
                             rightButtonText="none"
-                            updateTopRightPanelProject={
-                                this.props.updateTopRightPanelProject
+                            updatePanelProject={
+                                this.props.updateTopRightPanelProjectMyProjects
                             }
                         />
                     </Colxx>
@@ -70,7 +70,7 @@ export default injectIntl(
         mapStateToProps,
         {
             getActiveProjects,
-            updateTopRightPanelProject,
+            updateTopRightPanelProjectMyProjects,
         }
     )(ProjectListPages)
 )

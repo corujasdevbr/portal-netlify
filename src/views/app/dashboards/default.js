@@ -4,6 +4,7 @@ import { Row } from 'reactstrap'
 import { Colxx, Separator } from '../../../components/common/CustomBootstrap'
 import Breadcrumb from '../../../containers/navs/Breadcrumb'
 import RightPanelData from '../../../containers/dashboards/RightPanelData'
+import RightPanelDataFileUpload from '../../../containers/dashboards/RightPanelDataFileUpload'
 
 import { ReactTableAdvancedCard } from '../../../containers/ui/ReactTableCards'
 import { ReactTableAdvancedCardForDashboard } from '../../../containers/ui/ReactTableCardsForDashboard'
@@ -69,7 +70,7 @@ class DefaultDashboard extends Component {
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
-                        <RightPanelData
+                        <RightPanelDataFileUpload
                             rightPanelProject={
                                 this.props.bottomRightPanelProject
                             }
