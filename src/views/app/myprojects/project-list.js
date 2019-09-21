@@ -9,7 +9,10 @@ import RightPanelDataForProject from '../../../containers/dashboards/RightPanelD
 import { ReactTableAdvancedCardForProject } from '../../../containers/ui/ReactTableForProject'
 
 import { connect } from 'react-redux'
-import { getActiveProjects } from '../../../redux/actions'
+import {
+    getActiveProjects,
+    updateTopRightPanelProject,
+} from '../../../redux/actions'
 
 class ProjectListPages extends Component {
     componentDidMount() {
@@ -39,7 +42,13 @@ class ProjectListPages extends Component {
                             rightPanelProject={
                                 this.props.topRightPanelProjectMyProjects
                             }
+                            getActiveProjects={this.props.getActiveProjects}
                             listData={this.props.rowInfo}
+                            leftButtonText="submit"
+                            rightButtonText="none"
+                            updateTopRightPanelProject={
+                                this.props.updateTopRightPanelProject
+                            }
                         />
                     </Colxx>
                 </Row>
@@ -61,6 +70,7 @@ export default injectIntl(
         mapStateToProps,
         {
             getActiveProjects,
+            updateTopRightPanelProject,
         }
     )(ProjectListPages)
 )

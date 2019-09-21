@@ -15,8 +15,64 @@ import {
     CardBody,
     CardTitle,
 } from 'reactstrap'
+
+import { API } from 'aws-amplify'
 export default function RightPanelDataForProject(props) {
     const data = props.rightPanelProject
+
+    const approveProject = () => {
+        let operation = ''
+        if (data[0].status === 1) {
+            operation = 'acceptAllotedProject'
+        } else if (data[0].status === 2) {
+            operation = 'submitProject'
+        }
+        const userId = localStorage.getItem('userId')
+        let targetStatus = 0
+        if (operation === 'acceptAllotedProject') {
+            targetStatus = 2
+        } else if (operation === 'submitProject') {
+            targetStatus = 3
+        }
+        API.put('portal-api', `/users/${userId}/update`, {
+            body: {
+                role: localStorage.getItem('userGroup'),
+                status: parseInt(targetStatus),
+                projectId: data[0].itemId,
+            },
+        })
+            .then(() => {
+                if (operation === 'submitProject') {
+                    props.updateTopRightPanelProject([])
+                }
+                props.getActiveProjects()
+            })
+            .catch(error => {
+                console.log(error)
+                alert('Operation failed. Please try again.')
+            })
+    }
+    const rejectProject = async () => {
+        const userId = localStorage.getItem('userId')
+        let targetStatus = 0
+        if (data[0].status === 1) {
+            targetStatus = 0
+        }
+        API.put('portal-api', `/users/${userId}/update`, {
+            body: {
+                role: localStorage.getItem('userGroup'),
+                status: parseInt(targetStatus),
+                projectId: data[0].itemId,
+            },
+        })
+            .then(response => {
+                props.updateTopRightPanelProject([])
+            })
+            .catch(error => {
+                console.log(error.response)
+                alert('Operation failed. Please try again.')
+            })
+    }
 
     return (
         <Card>
@@ -56,12 +112,28 @@ export default function RightPanelDataForProject(props) {
                                 </p>
                             </div>
                         )}
-                        <Button color="info" className="mb-2">
-                            <IntlMessages id="button.submit" />
-                        </Button>{' '}
-                        <Button color="info" className="mb-2">
-                            <IntlMessages id="button.upload" />
-                        </Button>{' '}
+                        {props.leftButtonText === 'none' ? null : (
+                            <Button
+                                color="info"
+                                className="mb-2"
+                                onClick={approveProject}
+                            >
+                                <IntlMessages
+                                    id={`button.${props.leftButtonText}`}
+                                />
+                            </Button>
+                        )}
+                        {props.rightButtonText === 'none' ? null : (
+                            <Button
+                                color="danger"
+                                className="mb-2"
+                                onClick={rejectProject}
+                            >
+                                <IntlMessages
+                                    id={`button.${props.rightButtonText}`}
+                                />
+                            </Button>
+                        )}
                     </PerfectScrollbar>
                 </div>
             </CardBody>
