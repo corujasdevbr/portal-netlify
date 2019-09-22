@@ -9,11 +9,9 @@ import {
     Card,
     CardBody,
     CardTitle,
-    FormGroup,
-    Label,
     Input,
-    FormText,
-    Form,
+    InputGroup,
+    InputGroupText,
 } from 'reactstrap'
 
 export default function RightPanelDataFileUpload(props) {
@@ -132,11 +130,13 @@ export default function RightPanelDataFileUpload(props) {
                                 </p>
                             </div>
                         )}
-                        <input
-                            type="file"
-                            name="file"
-                            onChange={onFileUpload}
-                        />
+                        <InputGroup>
+                            <Input
+                                type="file"
+                                name="file"
+                                onChange={onFileUpload}
+                            />
+                        </InputGroup>
                         {props.leftButtonText === 'none' ? null : (
                             <Button
                                 color="info"
