@@ -7,13 +7,13 @@ class Main extends Component {
         return loginUser ? (
             <Redirect
                 to={{
-                    pathname: '/app'
+                    pathname: '/app',
                 }}
             />
         ) : (
             <Redirect
                 to={{
-                    pathname: '/user/login'
+                    pathname: '/user/login',
                 }}
             />
         )

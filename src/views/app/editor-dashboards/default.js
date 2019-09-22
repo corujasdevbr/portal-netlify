@@ -9,7 +9,11 @@ import { ReactTableAdvancedCard } from '../../../containers/ui/ReactTableCards'
 import { ReactTableAdvancedCardForDashboard } from '../../../containers/ui/ReactTableCardsForDashboard'
 
 import { connect } from 'react-redux'
-import { getAllotedProjects, getActiveProjects } from '../../../redux/actions'
+import {
+    getActiveProjects,
+    updateTopRightPanelProject,
+} from '../../../redux/actions'
+import RightPanelDataFileUploadEditor from '../../../containers/dashboards/RightPanelDataFileUploadEditor'
 
 class EditorDefaultDashboard extends Component {
     componentDidMount() {
@@ -35,37 +39,28 @@ class EditorDefaultDashboard extends Component {
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
-                        <RightPanelData
+                        <RightPanelDataFileUploadEditor
                             rightPanelProject={this.props.topRightPanelProject}
+                            getActiveProjects={this.props.getActiveProjects}
+                            updateRightPanelProject={
+                                this.props.updateTopRightPanelProject
+                            }
                             listData={this.props.rowInfo}
+                            leftButtonText="submit"
+                            rightButtonText="none"
                         />
                     </Colxx>
                 </Row>
-                {/* <Row className="mb-5">
-                    <Colxx lg="12" xl="8" className="mb-4">
-                        <ReactTableAdvancedCard />
-                    </Colxx>
-                    <Colxx lg="12" xl="4" className="mb-4">
-                        <RightPanelData listData={this.props.rowInfo} />
-                    </Colxx>
-                </Row> */}
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = ({ projects }) => {
-    const {
-        allotedProjects,
-        activeProjects,
-        topRightPanelProject,
-        bottomRightPanelProject,
-    } = projects
+    const { activeProjects, topRightPanelProject } = projects
     return {
-        allotedProjects,
         activeProjects,
         topRightPanelProject,
-        bottomRightPanelProject,
     }
 }
 
@@ -73,7 +68,6 @@ export default injectIntl(
     connect(
         mapStateToProps,
         {
-            getAllotedProjects,
             getActiveProjects,
         }
     )(EditorDefaultDashboard)

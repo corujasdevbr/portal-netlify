@@ -66,6 +66,12 @@ const BusinessProfile = React.lazy(() =>
 )
 
 class App extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            group: localStorage.getItem('userGroup'),
+        }
+    }
     render() {
         const { match } = this.props
 
@@ -107,7 +113,6 @@ class App extends Component {
                                     <EditorDashboards {...props} />
                                 )}
                             />
-
                             <Route
                                 path={`${match.url}/editor-myprojects`}
                                 render={props => <EditorMyProject {...props} />}
