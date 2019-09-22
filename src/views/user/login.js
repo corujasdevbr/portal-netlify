@@ -34,7 +34,7 @@ class Login extends Component {
                     <Card className="auth-card">
                         <div className="position-relative image-side ">
                             <p className="text-white h2">
-                                MAGIC IS IN THE DETAILS
+                                One stop destination for Content Creation
                             </p>
                             <p className="white mb-0">
                                 Please use your credentials to login.
