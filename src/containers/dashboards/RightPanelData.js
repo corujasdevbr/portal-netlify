@@ -103,13 +103,9 @@ export default function RightPanelData(props) {
                             </div>
                         ) : (
                             <div className="pl-3 pt-2 pr-2 pb-2">
-                                {'Company Name'}
+                                {'Project Title'}
                                 <p className="list-item-heading">
-                                    {data[0].companyName}
-                                </p>
-                                {'Topic Name'}
-                                <p className="list-item-heading">
-                                    {data[0].topicName}
+                                    {data[0].projectTitle}
                                 </p>
                                 {'Project Brief'}{' '}
                                 <p className="list-item-heading">
