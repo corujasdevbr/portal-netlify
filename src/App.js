@@ -31,10 +31,6 @@ class App extends Component {
             document.body.classList.remove('rtl')
         }
     }
-    componentDidMount() {
-        this.props.getUserDetails()
-    }
-
     render() {
         const { locale, loginUser } = this.props
         const currentAppLocale = AppLocale[locale]

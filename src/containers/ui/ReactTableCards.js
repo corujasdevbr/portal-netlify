@@ -72,7 +72,39 @@ const dataTableColumns = [
     {
         Header: 'Status',
         accessor: 'status',
-        Cell: props => <p className="text-muted">{props.value}</p>,
+        Cell: props => {
+            console.log(props.value)
+            let status = ''
+            switch (props.value) {
+                case 0:
+                    status = 'Not alloted'
+                    break
+                case 1:
+                    status = 'Alloted to writer'
+                    break
+                case 2:
+                    status = 'Accepted'
+                    break
+                case 3:
+                    status = 'To be sent to editor'
+                    break
+                case 4:
+                    status = 'Sent to editor'
+                    break
+                case 5:
+                    status = 'Submitted by editor'
+                    break
+                case 6:
+                    status = 'Sent to client'
+                    break
+                case 7:
+                    status = 'Rework'
+                    break
+                default:
+                    status = ';)'
+            }
+            return <p className="text-muted">{status}</p>
+        },
     },
 ]
 

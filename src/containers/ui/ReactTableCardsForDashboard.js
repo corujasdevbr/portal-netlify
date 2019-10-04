@@ -93,46 +93,7 @@ export const ReactTableWithPaginationCard = props => {
         </Card>
     )
 }
-// export const ReactTableWithScrollableCard = props => {
-//     const [data, setData] = useState([])
-//     useEffect(() => {
-//         const id = localStorage.getItem('userId')
 
-//         async function fetchData() {
-//             try {
-//                 let items = await API.get('portal-api', `/projects/${id}`, {
-//                     queryStringParameters: {
-//                         lr: 1,
-//                         ur: 1,
-//                     },
-//                 })
-//                 setData(items['Responses']['item-table'])
-//             } catch (error) {
-//                 console.log({ error: error.response })
-//             }
-//         }
-//         fetchData()
-//     }, [])
-//     return (
-//         <Card className="mb-4">
-//             <CardBody>
-//                 <CardTitle>
-//                     <IntlMessages id="table.react-scrollable" />
-//                 </CardTitle>
-//                 <ReactTable
-//                     data={data}
-//                     TbodyComponent={CustomTbodyComponent}
-//                     columns={dataTableColumns}
-//                     defaultPageSize={20}
-//                     showPageJump={false}
-//                     showPageSizeOptions={false}
-//                     showPagination={false}
-//                     className={'react-table-fixed-height'}
-//                 />
-//             </CardBody>
-//         </Card>
-//     )
-// }
 export const ReactTableAdvancedCardForDashboardConnected = props => {
     const data = props.projects
     return (

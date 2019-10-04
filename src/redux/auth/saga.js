@@ -46,14 +46,13 @@ function* loginWithEmailPassword({ payload }) {
             email,
             password
         )
-        localStorage.setItem(
-            'userId',
-            signInUserSession.idToken.payload['custom:userId']
-        )
-        localStorage.setItem(
-            'userGroup',
-            signInUserSession.idToken.payload['custom:group']
-        )
+
+        const userId = signInUserSession.idToken.payload['custom:userId']
+        const userGroup = signInUserSession.idToken.payload['custom:group']
+        localStorage.setItem('userId', userId)
+        localStorage.setItem('userGroup', userGroup)
+        const userDetails = yield call(getUserDetails, userId, userGroup)
+        yield put(setUserDetails(userDetails))
         yield put(
             loginUserSuccess(signInUserSession.idToken.payload['custom:userId'])
         )
