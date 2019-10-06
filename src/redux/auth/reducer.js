@@ -10,7 +10,9 @@ import {
 const INIT_STATE = {
     user: localStorage.getItem('userId'),
     loading: false,
-    userDetails: {},
+    userDetails: localStorage.getItem('userDetails')
+        ? localStorage.getItem('userDetails')
+        : {},
 }
 
 export default (state = INIT_STATE, action) => {

@@ -30,6 +30,7 @@ function* fetchUserDetails() {
     const userGroup = localStorage.getItem('userGroup')
     try {
         const userDetails = yield call(getUserDetails, userId, userGroup)
+        localStorage.setItem('userDetails', userDetails)
         yield put(setUserDetails(userDetails))
     } catch (error) {
         // TODO log out the user on error
@@ -52,6 +53,8 @@ function* loginWithEmailPassword({ payload }) {
         localStorage.setItem('userId', userId)
         localStorage.setItem('userGroup', userGroup)
         const userDetails = yield call(getUserDetails, userId, userGroup)
+        localStorage.setItem('userDetails', userDetails)
+        // TODO securely store user details
         yield put(setUserDetails(userDetails))
         yield put(
             loginUserSuccess(signInUserSession.idToken.payload['custom:userId'])
