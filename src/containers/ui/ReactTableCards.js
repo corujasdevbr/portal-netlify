@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component, useState } from 'react'
 import { Card, CardBody, CardTitle } from 'reactstrap'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import ReactTable from 'react-table'
@@ -146,6 +146,8 @@ export const ReactTableWithPaginationCard = props => {
 
 const ReactTableAdvancedCardConnected = props => {
     const data = props.projects
+    const [selected, setSelected] = useState(null)
+
     return (
         <Card className="mb-4">
             <CardBody>
@@ -167,12 +169,35 @@ const ReactTableAdvancedCardConnected = props => {
                         return { projects: props.projects }
                     }}
                     getTrProps={(state, rowInfo, column, instance) => {
-                        return {
-                            onClick: () => {
-                                props.updateBottomRightPanelProject(
-                                    rowInfo.original
-                                )
-                            },
+                        if (typeof rowInfo !== 'undefined') {
+                            return {
+                                onClick: (event, handleOriginal) => {
+                                    setSelected(rowInfo.index)
+                                    props.updateBottomRightPanelProject(
+                                        rowInfo.original
+                                    )
+                                    if (handleOriginal) {
+                                        handleOriginal()
+                                    }
+                                },
+                                style: {
+                                    background:
+                                        rowInfo.index === selected
+                                            ? 'rgba(146, 44, 136, 0.1)'
+                                            : 'rgba(0,0,0,0)',
+                                },
+                            }
+                        } else {
+                            return {
+                                onClick: handleOriginal => {
+                                    props.updateBottomRightPanelProject(
+                                        rowInfo.original
+                                    )
+                                    if (handleOriginal) {
+                                        handleOriginal()
+                                    }
+                                },
+                            }
                         }
                     }}
                 />
