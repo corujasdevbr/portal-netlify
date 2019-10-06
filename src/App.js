@@ -12,6 +12,7 @@ import ColorSwitcher from './components/common/ColorSwitcher'
 import NotificationContainer from './components/common/react-notifications/NotificationContainer'
 import { isMultiColorActive } from './constants/defaultValues'
 import { getDirection } from './helpers/Utils'
+import { getUserDetails } from './redux/actions'
 
 const ViewMain = React.lazy(() => import('./views'))
 const ViewApp = React.lazy(() => import('./views/app'))
@@ -29,6 +30,10 @@ class App extends Component {
             document.body.classList.add('ltr')
             document.body.classList.remove('rtl')
         }
+    }
+
+    componentDidMount() {
+        this.props.getUserDetails()
     }
     render() {
         const { locale, loginUser } = this.props
@@ -92,5 +97,5 @@ const mapStateToProps = ({ authUser, settings }) => {
 
 export default connect(
     mapStateToProps,
-    null
+    { getUserDetails }
 )(App)

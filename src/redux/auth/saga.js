@@ -51,9 +51,6 @@ function* loginWithEmailPassword({ payload }) {
         const userGroup = signInUserSession.idToken.payload['custom:group']
         localStorage.setItem('userId', userId)
         localStorage.setItem('userGroup', userGroup)
-        const userDetails = yield call(getUserDetails, userId, userGroup)
-        // TODO securely store user details
-        yield put(setUserDetails(userDetails))
         yield put(
             loginUserSuccess(signInUserSession.idToken.payload['custom:userId'])
         )
@@ -120,7 +117,7 @@ export function* watchLogoutUser() {
     yield takeEvery(LOGOUT_USER, logout)
 }
 export function* watchUserDetails() {
-    yield takeEvery(GET_USER_DETAILS, fetchUserDetails)
+    yield takeLatest(GET_USER_DETAILS, fetchUserDetails)
 }
 
 export default function* rootSaga() {
