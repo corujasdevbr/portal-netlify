@@ -52,7 +52,22 @@ const dataTableColumns = [
     {
         Header: 'Deadline',
         accessor: 'deadline',
-        Cell: props => <p className="text-muted">{props.value}</p>,
+        Cell: props => {
+            const options = {
+                dateStyle: 'medium',
+                timeZone: 'Asia/Kolkata',
+                hour12: true,
+                year: '2-digit',
+                month: 'short',
+                day: '2-digit',
+            }
+            let date = new Date(parseInt(props.value))
+            return (
+                <p className="text-muted">
+                    {date.toLocaleString('en-GB', options)}
+                </p>
+            )
+        },
     },
     {
         Header: 'Genre',

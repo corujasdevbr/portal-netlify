@@ -70,27 +70,7 @@ export default function RightPanelDataFileUpload(props) {
             alert('Operation failed. Please try again.')
         }
     }
-    const rejectProject = async () => {
-        const userId = localStorage.getItem('userId')
-        let targetStatus = 0
-        if (data[0].status === 1) {
-            targetStatus = 0
-        }
-        API.put('portal-api', `/users/${userId}/update`, {
-            body: {
-                role: localStorage.getItem('userGroup'),
-                status: parseInt(targetStatus),
-                projectId: data[0].itemId,
-            },
-        })
-            .then(response => {
-                props.updateTopRightPanelProject([])
-            })
-            .catch(error => {
-                console.log(error.response)
-                alert('Operation failed. Please try again.')
-            })
-    }
+
     return (
         <Card>
             <div className="position-absolute card-top-buttons">
@@ -122,7 +102,7 @@ export default function RightPanelDataFileUpload(props) {
                                 </p>
                                 {'Project Brief'}{' '}
                                 <p className="list-item-heading">
-                                    {data[0].projectBrief}
+                                    {data[0].brief}
                                 </p>
                             </div>
                         )}

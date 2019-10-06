@@ -109,7 +109,7 @@ export default function RightPanelData(props) {
                                 </p>
                                 {'Project Brief'}{' '}
                                 <p className="list-item-heading">
-                                    {data[0].projectBrief}
+                                    {data[0].brief}
                                 </p>
                             </div>
                         )}

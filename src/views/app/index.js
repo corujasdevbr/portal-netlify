@@ -4,30 +4,18 @@ import { connect } from 'react-redux'
 
 import AppLayout from '../../layout/AppLayout'
 
-//import MyPayments from './mypayments';
-
 const RedirectPage = React.lazy(() => import('./redirect'))
 const Dashboards = React.lazy(() => import('./dashboards'))
-
-const Menu = React.lazy(() => import('./menu'))
 const BlankPage = React.lazy(() => import('./blank-page'))
 const MyProject = React.lazy(() => import('./myprojects'))
-
 const MyPayments = React.lazy(() => import('./mypayments'))
-
 const Profile = React.lazy(() => import('./profile'))
-
 const EditorDashboards = React.lazy(() => import('./editor-dashboards'))
-
 const EditorMyProject = React.lazy(() => import('./editor-myprojects'))
-
 const EditorMyPayments = React.lazy(() => import('./editor-mypayments'))
 const EditorProfile = React.lazy(() => import('./editor-profile'))
-
 const BusinessDashboards = React.lazy(() => import('./business-dashboards'))
-
 const BusinessMyProject = React.lazy(() => import('./business-myprojects'))
-
 const BusinessMyPayments = React.lazy(() => import('./business-mypayments'))
 const BusinessProfile = React.lazy(() => import('./business-profile'))
 
@@ -98,7 +86,6 @@ class App extends Component {
                                     <BusinessDashboards {...props} />
                                 )}
                             />
-
                             <Route
                                 path={`${match.url}/business-myprojects`}
                                 render={props => (
