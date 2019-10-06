@@ -36,8 +36,10 @@ class App extends Component {
         super(props)
         this.state = {
             group: localStorage.getItem('userGroup'),
+            userDetails: this.props.userDetails,
         }
     }
+
     render() {
         const { match } = this.props
         return (
@@ -126,14 +128,15 @@ class App extends Component {
         )
     }
 }
-const mapStateToProps = ({ menu }) => {
+const mapStateToProps = ({ menu, authUser }) => {
     const { containerClassnames } = menu
-    return { containerClassnames }
+    const { userDetails } = authUser
+    return { containerClassnames, userDetails }
 }
 
 export default withRouter(
     connect(
         mapStateToProps,
-        {}
+        null
     )(App)
 )

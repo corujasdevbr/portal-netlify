@@ -73,7 +73,6 @@ const dataTableColumns = [
         Header: 'Status',
         accessor: 'status',
         Cell: props => {
-            console.log(props.value)
             let status = ''
             switch (props.value) {
                 case 0:

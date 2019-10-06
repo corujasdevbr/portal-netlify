@@ -12,7 +12,6 @@ import ColorSwitcher from './components/common/ColorSwitcher'
 import NotificationContainer from './components/common/react-notifications/NotificationContainer'
 import { isMultiColorActive } from './constants/defaultValues'
 import { getDirection } from './helpers/Utils'
-import { getUserDetails } from './redux/actions'
 
 const ViewMain = React.lazy(() => import('./views'))
 const ViewApp = React.lazy(() => import('./views/app'))
@@ -90,9 +89,8 @@ const mapStateToProps = ({ authUser, settings }) => {
     const { locale } = settings
     return { loginUser, locale }
 }
-const mapActionsToProps = { getUserDetails }
 
 export default connect(
     mapStateToProps,
-    mapActionsToProps
+    null
 )(App)

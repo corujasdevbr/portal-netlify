@@ -30,7 +30,6 @@ function* fetchUserDetails() {
     const userGroup = localStorage.getItem('userGroup')
     try {
         const userDetails = yield call(getUserDetails, userId, userGroup)
-        localStorage.setItem('userDetails', userDetails)
         yield put(setUserDetails(userDetails))
     } catch (error) {
         // TODO log out the user on error
@@ -53,7 +52,6 @@ function* loginWithEmailPassword({ payload }) {
         localStorage.setItem('userId', userId)
         localStorage.setItem('userGroup', userGroup)
         const userDetails = yield call(getUserDetails, userId, userGroup)
-        localStorage.setItem('userDetails', userDetails)
         // TODO securely store user details
         yield put(setUserDetails(userDetails))
         yield put(
@@ -122,7 +120,7 @@ export function* watchLogoutUser() {
     yield takeEvery(LOGOUT_USER, logout)
 }
 export function* watchUserDetails() {
-    yield takeLatest(GET_USER_DETAILS, fetchUserDetails)
+    yield takeEvery(GET_USER_DETAILS, fetchUserDetails)
 }
 
 export default function* rootSaga() {
