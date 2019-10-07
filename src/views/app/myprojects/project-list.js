@@ -33,9 +33,7 @@ class ProjectListPages extends Component {
                 </Row>
                 <Row className="mb-5">
                     <Colxx lg="12" xl="8" className="mb-4">
-                        <ReactTableAdvancedCardForProject
-                            projects={this.props.activeProjects}
-                        />
+                        <ReactTableAdvancedCardForProject />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
                         <RightPanelDataForProject

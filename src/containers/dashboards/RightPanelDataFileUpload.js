@@ -54,7 +54,8 @@ export default function RightPanelDataFileUpload(props) {
             await API.put('portal-api', `/users/${userId}/update`, {
                 body: {
                     role: localStorage.getItem('userGroup'),
-                    status: parseInt(targetStatus),
+                    fromStatus: parseInt(data[0].status),
+                    toStatus: parseInt(targetStatus),
                     projectId: data[0].itemId,
                 },
             })
@@ -99,6 +100,10 @@ export default function RightPanelDataFileUpload(props) {
                                 {'Project Title'}
                                 <p className="list-item-heading">
                                     {data[0].projectTitle}
+                                </p>
+                                {'Project Code'}
+                                <p className="list-item-heading">
+                                    {data[0].projectCode}
                                 </p>
                                 {'Project Brief'}{' '}
                                 <p className="list-item-heading">

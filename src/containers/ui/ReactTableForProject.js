@@ -12,6 +12,8 @@ import DataTablePagination from '../../components/DatatablePagination'
 import { connect } from 'react-redux'
 import { updateTopRightPanelProjectMyProjects } from '../../redux/actions'
 
+import { API } from 'aws-amplify'
+
 const CustomTbodyComponent = props => (
     <div {...props} className={classnames('rt-tbody', props.className || [])}>
         <PerfectScrollbar options={{ suppressScrollX: true }}>
@@ -82,8 +84,41 @@ export const ReactTableWithPaginationCard = props => {
         </Card>
     )
 }
+
 const ReactTableAdvancedCardForProjectConnected = props => {
-    const data = props.projects
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        if (
+            !(
+                Object.entries(props.userDetails).length === 0 &&
+                props.userDetails.constructor === Object
+            )
+        ) {
+            organiseHistory(props.userDetails)
+        }
+    }, [props.userDetails])
+
+    const organiseHistory = ({ projectHistory }) => {
+        const projectIds = projectHistory ? Object.keys(projectHistory) : {}
+        const projects = []
+        projectIds.forEach(id => {
+            projects.push({
+                itemId: id,
+                role: 'project',
+            })
+        })
+        API.post('portal-api', '/items', {
+            body: { keys: projects },
+        })
+            .then(response => {
+                setData(response['Responses']['item-table'])
+            })
+            .catch(error => {
+                console.log(error.response)
+            })
+    }
+    // const data = props.projects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -119,10 +154,12 @@ const ReactTableAdvancedCardForProjectConnected = props => {
     )
 }
 
-const mapStateToProps = ({ projects }) => {
+const mapStateToProps = ({ projects, authUser }) => {
     const { topRightPanelProject } = projects
+    const { userDetails } = authUser
     return {
         topRightPanelProject,
+        userDetails,
     }
 }
 
@@ -132,27 +169,3 @@ export const ReactTableAdvancedCardForProject = connect(
         updateTopRightPanelProjectMyProjects,
     }
 )(ReactTableAdvancedCardForProjectConnected)
-
-// export const ReactTableWithScrollableCard = props => {
-//     const data = props.activeProjects
-
-//     return (
-//         <Card className="mb-4">
-//             <CardBody>
-//                 <CardTitle>
-//                     <IntlMessages id="table.react-scrollable" />
-//                 </CardTitle>
-//                 <ReactTable
-//                     data={data}
-//                     TbodyComponent={CustomTbodyComponent}
-//                     columns={dataTableColumns}
-//                     defaultPageSize={20}
-//                     showPageJump={false}
-//                     showPageSizeOptions={false}
-//                     showPagination={false}
-//                     className={'react-table-fixed-height'}
-//                 />
-//             </CardBody>
-//         </Card>
-//     )
-// }
