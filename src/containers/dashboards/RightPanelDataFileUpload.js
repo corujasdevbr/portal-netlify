@@ -1,32 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import IntlMessages from '../../helpers/IntlMessages'
 import { API, Storage } from 'aws-amplify'
 
-import {
-    Button,
-    Card,
-    CardBody,
-    CardTitle,
-    Input,
-    InputGroup,
-    InputGroupText,
-} from 'reactstrap'
+import { Button, Card, CardBody, CardTitle, InputGroup } from 'reactstrap'
 
 export default function RightPanelDataFileUpload(props) {
     const [uploadFile, setUploadFile] = useState(null)
-    const data = props.rightPanelProject
+    const [inputGroupText, setInputGroupText] = useState('Choose file')
+    const [data, setData] = useState({})
+
+    useEffect(() => {
+        setData(props.rightPanelProject)
+    }, [props.rightPanelProject])
 
     const onFileUpload = event => {
         setUploadFile(event.target.files[0])
+        setInputGroupText(event.target.files[0].name)
     }
 
     const approveProject = async () => {
         let operation = ''
-        if (data[0].status === 1) {
+        if (data.status === 1) {
             operation = 'acceptAllottedProject'
-        } else if (data[0].status === 2) {
+        } else if (data.status === 2) {
             operation = 'submitProject'
         }
         const userId = localStorage.getItem('userId')
@@ -47,22 +45,22 @@ export default function RightPanelDataFileUpload(props) {
             })
             await API.put('portal-api', `/users/${userId}/projects/fileUrl`, {
                 body: {
-                    projectId: data[0].itemId,
+                    projectId: data.itemId,
                     url: fileUrl,
                 },
             })
             await API.put('portal-api', `/users/${userId}/update`, {
                 body: {
                     role: localStorage.getItem('userGroup'),
-                    fromStatus: parseInt(data[0].status),
+                    fromStatus: parseInt(data.status),
                     toStatus: parseInt(targetStatus),
-                    projectId: data[0].itemId,
+                    projectId: data.itemId,
                 },
             })
             if (operation === 'acceptAllottedProject') {
-                props.updateTopRightPanelProject([])
+                props.updateTopRightPanelProject({})
             } else if (operation === 'submitProject') {
-                props.updateBottomRightPanelProject([])
+                props.updateBottomRightPanelProject({})
             }
             props.getActiveProjects()
             props.getAllottedProjects()
@@ -91,43 +89,59 @@ export default function RightPanelDataFileUpload(props) {
                         }}
                     >
                         {/* check if object is empty */}
-                        {data.length === 0 ? (
+                        {Object.entries(data).length === 0 &&
+                        data.constructor === Object ? (
                             <div className="pl-3 pt-2 pr-2 pb-2">
                                 {'Select a project'}
                             </div>
                         ) : (
-                            <div className="pl-3 pt-2 pr-2 pb-2">
-                                {'Project Title'}
-                                <p className="list-item-heading">
-                                    {data[0].projectTitle}
-                                </p>
-                                {'Project Code'}
-                                <p className="list-item-heading">
-                                    {data[0].projectCode}
-                                </p>
-                                {'Project Brief'}{' '}
-                                <p className="list-item-heading">
-                                    {data[0].brief}
-                                </p>
-                            </div>
-                        )}
-                        <InputGroup>
-                            <Input
-                                type="file"
-                                name="file"
-                                onChange={onFileUpload}
-                            />
-                        </InputGroup>
-                        {props.leftButtonText === 'none' ? null : (
-                            <Button
-                                color="info"
-                                className="mb-2"
-                                onClick={approveProject}
-                            >
-                                <IntlMessages
-                                    id={`button.${props.leftButtonText}`}
-                                />
-                            </Button>
+                            <>
+                                <div className="pl-3 pt-2 pr-2 pb-2">
+                                    <p className="font-weight-bold">
+                                        Project Title
+                                    </p>
+                                    <p className="list-item-heading">
+                                        {data.projectTitle}
+                                    </p>
+                                    <p className="font-weight-bold">
+                                        Project Code
+                                    </p>
+                                    <p className="list-item-heading">
+                                        {data.projectCode}
+                                    </p>
+                                    <p className="font-weight-bold">
+                                        Project Brief
+                                    </p>
+                                    <p className="list-item-heading">
+                                        {data.brief}
+                                    </p>
+                                </div>
+                                <InputGroup className="mb-3">
+                                    <div className="custom-file">
+                                        <input
+                                            type="file"
+                                            className="custom-file-input"
+                                            id="file"
+                                            name="file"
+                                            onChange={onFileUpload}
+                                        />
+                                        <label className="custom-file-label">
+                                            {inputGroupText}
+                                        </label>
+                                    </div>
+                                </InputGroup>
+                                {props.leftButtonText === 'none' ? null : (
+                                    <Button
+                                        color="primary"
+                                        className="mb-2"
+                                        onClick={approveProject}
+                                    >
+                                        <IntlMessages
+                                            id={`button.${props.leftButtonText}`}
+                                        />
+                                    </Button>
+                                )}
+                            </>
                         )}
                     </PerfectScrollbar>
                 </div>

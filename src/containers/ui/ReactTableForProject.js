@@ -68,6 +68,7 @@ const dataTableColumns = [
 
 const ReactTableAdvancedCardForProjectConnected = props => {
     const [data, setData] = useState([])
+    const [selected, setSelected] = useState(null)
 
     useEffect(() => {
         if (
@@ -121,16 +122,43 @@ const ReactTableAdvancedCardForProjectConnected = props => {
                     selectAll={selectAll}
                     toggleAll={handleSelectAll}
                     getTrProps={(state, rowInfo, column, instance) => {
-                        return {
-                            onClick: () => {
-                                props.updateTopRightPanelProjectMyProjects({
-                                    project: rowInfo.original,
-                                    history:
-                                        props.userDetails.projectHistory[
-                                            rowInfo.original['itemId']
-                                        ],
-                                })
-                            },
+                        if (typeof rowInfo !== 'undefined') {
+                            return {
+                                onClick: (event, handleOriginal) => {
+                                    setSelected(rowInfo.index)
+                                    props.updateTopRightPanelProjectMyProjects({
+                                        project: rowInfo.original,
+                                        history:
+                                            props.userDetails.projectHistory[
+                                                rowInfo.original['itemId']
+                                            ],
+                                    })
+                                    if (handleOriginal) {
+                                        handleOriginal()
+                                    }
+                                },
+                                style: {
+                                    background:
+                                        rowInfo.index === selected
+                                            ? 'rgba(146, 44, 136, 0.1)'
+                                            : 'rgba(0,0,0,0)',
+                                },
+                            }
+                        } else {
+                            return {
+                                onClick: handleOriginal => {
+                                    props.updateTopRightPanelProjectMyProjects({
+                                        project: rowInfo.original,
+                                        history:
+                                            props.userDetails.projectHistory[
+                                                rowInfo.original['itemId']
+                                            ],
+                                    })
+                                    if (handleOriginal) {
+                                        handleOriginal()
+                                    }
+                                },
+                            }
                         }
                     }}
                 />

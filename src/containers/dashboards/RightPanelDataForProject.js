@@ -71,11 +71,19 @@ const HistoryTable = props => {
 }
 
 export default function RightPanelDataForProject(props) {
-    const [data, setData] = useState([])
+    const [data, setData] = useState({
+        history: [],
+        project: {},
+    })
 
     useEffect(() => {
-        if (props.rightPanelProject.length !== 0) {
-            setData(props.rightPanelProject[0].project)
+        if (
+            !(
+                Object.entries(props.rightPanelProject).length === 0 &&
+                props.rightPanelProject.constructor === Object
+            )
+        ) {
+            setData(props.rightPanelProject.project)
         }
     }, [props.rightPanelProject])
 
@@ -108,7 +116,7 @@ export default function RightPanelDataForProject(props) {
                                 </div>
                                 <HistoryTable
                                     history={
-                                        props.rightPanelProject[0].history || {}
+                                        props.rightPanelProject.history || []
                                     }
                                 />
                             </>

@@ -40,7 +40,6 @@ class ProjectListPages extends Component {
                             rightPanelProject={
                                 this.props.topRightPanelProjectMyProjects
                             }
-                            getActiveProjects={this.props.getActiveProjects}
                             listData={this.props.rowInfo}
                             leftButtonText="submit"
                             rightButtonText="none"

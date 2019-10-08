@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import IntlMessages from '../../helpers/IntlMessages'
@@ -19,13 +19,17 @@ import {
 } from 'reactstrap'
 
 export default function RightPanelData(props) {
-    const data = props.rightPanelProject
+    const [data, setData] = useState({})
+
+    useEffect(() => {
+        setData(props.rightPanelProject)
+    }, [props.rightPanelProject])
 
     const approveProject = () => {
         let operation = ''
-        if (data[0].status === 1) {
+        if (data.status === 1) {
             operation = 'acceptAllottedProject'
-        } else if (data[0].status === 2) {
+        } else if (data.status === 2) {
             operation = 'submitProject'
         }
         const userId = localStorage.getItem('userId')
@@ -38,16 +42,16 @@ export default function RightPanelData(props) {
         API.put('portal-api', `/users/${userId}/update`, {
             body: {
                 role: localStorage.getItem('userGroup'),
-                fromStatus: parseInt(data[0].status),
+                fromStatus: parseInt(data.status),
                 toStatus: parseInt(targetStatus),
-                projectId: data[0].itemId,
+                projectId: data.itemId,
             },
         })
             .then(() => {
                 if (operation === 'acceptAllottedProject') {
-                    props.updateTopRightPanelProject([])
+                    props.updateTopRightPanelProject({})
                 } else if (operation === 'submitProject') {
-                    props.updateBottomRightPanelProject([])
+                    props.updateBottomRightPanelProject({})
                 }
                 props.getActiveProjects()
                 props.getAllottedProjects()
@@ -60,20 +64,20 @@ export default function RightPanelData(props) {
     const rejectProject = async () => {
         const userId = localStorage.getItem('userId')
         let targetStatus = 0
-        if (data[0].status === 1) {
+        if (data.status === 1) {
             targetStatus = 0
         }
         API.put('portal-api', `/users/${userId}/update`, {
             body: {
                 role: localStorage.getItem('userGroup'),
-                fromStatus: parseInt(data[0].status),
+                fromStatus: parseInt(data.status),
                 toStatus: parseInt(targetStatus),
-                projectId: data[0].itemId,
+                projectId: data.itemId,
             },
         })
             .then(response => {
                 console.log('TCL: RightPanelData -> response', response)
-                props.updateTopRightPanelProject([])
+                props.updateTopRightPanelProject({})
             })
             .catch(error => {
                 console.log(error.response)
@@ -99,47 +103,56 @@ export default function RightPanelData(props) {
                         }}
                     >
                         {/* check if object is empty */}
-                        {data.length === 0 ? (
+                        {Object.entries(data).length === 0 &&
+                        data.constructor === Object ? (
                             <div className="pl-3 pt-2 pr-2 pb-2">
                                 {'Select a project'}
                             </div>
                         ) : (
-                            <div className="pl-3 pt-2 pr-2 pb-2">
-                                {'Project Title'}
-                                <p className="list-item-heading">
-                                    {data[0].projectTitle}
-                                </p>
-                                {'Project Code'}
-                                <p className="list-item-heading">
-                                    {data[0].projectCode}
-                                </p>
-                                {'Project Brief'}{' '}
-                                <p className="list-item-heading">
-                                    {data[0].brief}
-                                </p>
-                            </div>
-                        )}
-                        {props.leftButtonText === 'none' ? null : (
-                            <Button
-                                color="info"
-                                className="mb-2"
-                                onClick={approveProject}
-                            >
-                                <IntlMessages
-                                    id={`button.${props.leftButtonText}`}
-                                />
-                            </Button>
-                        )}
-                        {props.rightButtonText === 'none' ? null : (
-                            <Button
-                                color="danger"
-                                className="mb-2"
-                                onClick={rejectProject}
-                            >
-                                <IntlMessages
-                                    id={`button.${props.rightButtonText}`}
-                                />
-                            </Button>
+                            <>
+                                <div className="pl-3 pt-2 pr-2 pb-2">
+                                    <p className="font-weight-bold">
+                                        Project Title
+                                    </p>
+                                    <p className="list-item-heading">
+                                        {data.projectTitle}
+                                    </p>
+                                    <p className="font-weight-bold">
+                                        Project Code
+                                    </p>
+                                    <p className="list-item-heading">
+                                        {data.projectCode}
+                                    </p>
+                                    <p className="font-weight-bold">
+                                        Project Brief
+                                    </p>
+                                    <p className="list-item-heading">
+                                        {data.brief}
+                                    </p>
+                                </div>
+                                {props.leftButtonText === 'none' ? null : (
+                                    <Button
+                                        color="primary"
+                                        className="mb-2 mx-2"
+                                        onClick={approveProject}
+                                    >
+                                        <IntlMessages
+                                            id={`button.${props.leftButtonText}`}
+                                        />
+                                    </Button>
+                                )}
+                                {props.rightButtonText === 'none' ? null : (
+                                    <Button
+                                        color="secondary"
+                                        className="mb-2 mx-2"
+                                        onClick={rejectProject}
+                                    >
+                                        <IntlMessages
+                                            id={`button.${props.rightButtonText}`}
+                                        />
+                                    </Button>
+                                )}
+                            </>
                         )}
                     </PerfectScrollbar>
                 </div>

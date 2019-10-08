@@ -11,9 +11,9 @@ import {
 const INIT_STATE = {
     activeProjects: [],
     allottedProjects: [],
-    topRightPanelProject: [],
-    bottomRightPanelProject: [],
-    topRightPanelProjectMyProjects: [],
+    topRightPanelProject: {},
+    bottomRightPanelProject: {},
+    topRightPanelProjectMyProjects: {},
 }
 
 export default (state = INIT_STATE, action) => {
@@ -27,13 +27,13 @@ export default (state = INIT_STATE, action) => {
         case UPDATE_ACTIVE_PROJECTS:
             return { ...state, activeProjects: action.payload }
         case UPDATE_TOP_RIGHT_PANEL_PROJECT:
-            return { ...state, topRightPanelProject: [action.payload] }
+            return { ...state, topRightPanelProject: action.payload }
         case UPDATE_BOTTOM_RIGHT_PANEL_PROJECT:
-            return { ...state, bottomRightPanelProject: [action.payload] }
+            return { ...state, bottomRightPanelProject: action.payload }
         case UPDATE_TOP_RIGHT_PANEL_PROJECT_MYPROJECTS:
             return {
                 ...state,
-                topRightPanelProjectMyProjects: [action.payload],
+                topRightPanelProjectMyProjects: action.payload,
             }
         default:
             return { ...state }
