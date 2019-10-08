@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import IntlMessages from '../../helpers/IntlMessages'
+
 import {
     Button,
     ButtonGroup,
@@ -15,79 +16,68 @@ import {
     CardTitle,
 } from 'reactstrap'
 
-import { API, Storage } from 'aws-amplify'
+import ReactTable from 'react-table'
+import DataTablePagination from '../../components/DatatablePagination'
+
+const dataTableColumns = [
+    {
+        Header: 'Date',
+        accessor: 'timestamp',
+        Cell: props => {
+            const options = {
+                dateStyle: 'medium',
+                timeZone: 'Asia/Kolkata',
+                hour12: true,
+                year: '2-digit',
+                month: 'short',
+                day: '2-digit',
+            }
+            let date = new Date(parseInt(props.value))
+            let outputText = ''
+            if (
+                props.original.fromStatus == 1 &&
+                props.original.toStatus == 2
+            ) {
+                outputText = `Accepted to work on ${date.toLocaleString(
+                    'en-GB',
+                    options
+                )}`
+            } else if (
+                props.original.fromStatus == 2 &&
+                props.original.toStatus == 3
+            ) {
+                outputText = `Submitted finished project on ${date.toLocaleString(
+                    'en-GB',
+                    options
+                )}`
+            }
+            return <p className="text-muted">{outputText}</p>
+        },
+    },
+]
+
+const HistoryTable = props => {
+    return (
+        <ReactTable
+            keyField="itemId"
+            data={props.history}
+            columns={dataTableColumns}
+            defaultPageSize={5}
+            showPageJump={true}
+            PaginationComponent={DataTablePagination}
+            showPageSizeOptions={true}
+        />
+    )
+}
+
 export default function RightPanelDataForProject(props) {
-    const [uploadFile, setUploadFile] = useState(null)
-    const data = props.rightPanelProject
+    const [data, setData] = useState([])
 
-    const onFileUpload = event => {
-        setUploadFile(event.target.files[0])
-    }
-
-    const approveProject = async () => {
-        let operation = ''
-        if (data[0].status === 1) {
-            operation = 'acceptAllotedProject'
-        } else if (data[0].status === 2) {
-            operation = 'submitProject'
+    useEffect(() => {
+        if (props.rightPanelProject) {
+            setData(props.rightPanelProject[0].project)
         }
-        const userId = localStorage.getItem('userId')
-        let targetStatus = 0
-        if (operation === 'acceptAllotedProject') {
-            targetStatus = 2
-        } else if (operation === 'submitProject') {
-            targetStatus = 3
-        }
-
-        try {
-            const uploadFileName = `${Date.now()}`
-            const stored = await Storage.vault.put(uploadFileName, uploadFile, {
-                contentType: uploadFile.type,
-            })
-            const fileUrl = await Storage.get(stored.key, {
-                level: 'private',
-            })
-            await API.put('portal-api', `/users/${userId}/projects/fileUrl`, {
-                body: {
-                    projectId: data[0].itemId,
-                    url: fileUrl,
-                },
-            })
-            await API.put('portal-api', `/users/${userId}/update`, {
-                body: {
-                    role: localStorage.getItem('userGroup'),
-                    status: parseInt(targetStatus),
-                    projectId: data[0].itemId,
-                },
-            })
-            props.updatePanelProject([])
-            props.getActiveProjects()
-        } catch (error) {
-            console.log(error.response)
-            alert('Operation failed. Please try again.')
-        }
-    }
-    const rejectProject = async () => {
-        const userId = localStorage.getItem('userId')
-        let targetStatus = 0
-        if (data[0].status === 1) {
-            targetStatus = 0
-        }
-        API.put('portal-api', `/users/${userId}/update`, {
-            body: {
-                role: localStorage.getItem('userGroup'),
-                status: parseInt(targetStatus),
-                projectId: data[0].itemId,
-            },
-        })
-            .then(response => {
-                props.updatePanelProject([])
-            })
-            .catch(error => {
-                console.log(error.response)
-                alert('Operation failed. Please try again.')
-            })
-    }
+    }, [props.rightPanelProject])
 
     return (
         <Card>
@@ -112,36 +102,16 @@ export default function RightPanelDataForProject(props) {
                                 {'Select a project'}
                             </div>
                         ) : (
-                            <div className="pl-3 pt-2 pr-2 pb-2">
-                                {'Code'}
-                                <p className="list-item-heading">
-                                    {data[0].code}
-                                </p>
-                                {'Name of Project'}
-                                <p className="list-item-heading">
-                                    {data[0].projectTitle}
-                                </p>
-                                {'Project Brief'}
-                                <p className="list-item-heading">
-                                    {data[0].projetBrief}
-                                </p>
-                            </div>
-                        )}
-                        <input
-                            type="file"
-                            name="file"
-                            onChange={onFileUpload}
-                        />
-                        {props.leftButtonText === 'none' ? null : (
-                            <Button
-                                color="info"
-                                className="mb-2"
-                                onClick={approveProject}
-                            >
-                                <IntlMessages
-                                    id={`button.${props.leftButtonText}`}
+                            <>
+                                <div className="pl-3 pt-2 pr-2 pb-2">
+                                    {data.projectCode}
+                                </div>
+                                <HistoryTable
+                                    history={
+                                        props.rightPanelProject[0].history || {}
+                                    }
                                 />
-                            </Button>
+                            </>
                         )}
                     </PerfectScrollbar>
                 </div>

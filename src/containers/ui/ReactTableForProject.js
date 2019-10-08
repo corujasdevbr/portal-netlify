@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Card, CardBody, CardTitle } from 'reactstrap'
-import PerfectScrollbar from 'react-perfect-scrollbar'
+// import PerfectScrollbar from 'react-perfect-scrollbar'
 import ReactTable from 'react-table'
-import treeTableHOC from 'react-table/lib/hoc/treeTable'
-import selectTableHOC from 'react-table/lib/hoc/selectTable'
+// import treeTableHOC from 'react-table/lib/hoc/treeTable'
+// import selectTableHOC from 'react-table/lib/hoc/selectTable'
 
-import classnames from 'classnames'
-import IntlMessages from '../../helpers/IntlMessages'
+// import classnames from 'classnames'
+// import IntlMessages from '../../helpers/IntlMessages'
 import DataTablePagination from '../../components/DatatablePagination'
 
 import { connect } from 'react-redux'
@@ -14,15 +14,15 @@ import { updateTopRightPanelProjectMyProjects } from '../../redux/actions'
 
 import { API } from 'aws-amplify'
 
-const CustomTbodyComponent = props => (
-    <div {...props} className={classnames('rt-tbody', props.className || [])}>
-        <PerfectScrollbar options={{ suppressScrollX: true }}>
-            {props.children}
-        </PerfectScrollbar>
-    </div>
-)
-const TreeTable = treeTableHOC(ReactTable)
-const SelectTreeTable = selectTableHOC(treeTableHOC(ReactTable))
+// const CustomTbodyComponent = props => (
+//     <div {...props} className={classnames('rt-tbody', props.className || [])}>
+//         <PerfectScrollbar options={{ suppressScrollX: true }}>
+//             {props.children}
+//         </PerfectScrollbar>
+//     </div>
+// )
+// const TreeTable = treeTableHOC(ReactTable)
+// const SelectTreeTable = selectTableHOC(treeTableHOC(ReactTable))
 let selectAll = false
 const handleSelectAll = row => {
     selectAll = true
@@ -63,28 +63,6 @@ const dataTableColumns = [
     },
 ]
 
-export const ReactTableWithPaginationCard = props => {
-    const data = props.projects
-    return (
-        <Card className="mb-4">
-            <CardBody>
-                <CardTitle>
-                    <IntlMessages id="table.react-pagination" />
-                </CardTitle>
-                <ReactTable
-                    data={data}
-                    columns={dataTableColumns}
-                    defaultPageSize={5}
-                    showPageJump={false}
-                    showPageSizeOptions={false}
-                    PaginationComponent={DataTablePagination}
-                    className={'react-table-fixed-height'}
-                />
-            </CardBody>
-        </Card>
-    )
-}
-
 const ReactTableAdvancedCardForProjectConnected = props => {
     const [data, setData] = useState([])
 
@@ -118,7 +96,6 @@ const ReactTableAdvancedCardForProjectConnected = props => {
                 console.log(error.response)
             })
     }
-    // const data = props.projects
     return (
         <Card className="mb-4">
             <CardBody>
@@ -136,15 +113,16 @@ const ReactTableAdvancedCardForProjectConnected = props => {
                     showPageSizeOptions={true}
                     selectAll={selectAll}
                     toggleAll={handleSelectAll}
-                    getPaginationProps={() => {
-                        return { projects: props.projects }
-                    }}
                     getTrProps={(state, rowInfo, column, instance) => {
                         return {
                             onClick: () => {
-                                props.updateTopRightPanelProjectMyProjects(
-                                    rowInfo.original
-                                )
+                                props.updateTopRightPanelProjectMyProjects({
+                                    project: rowInfo.original,
+                                    history:
+                                        props.userDetails.projectHistory[
+                                            rowInfo.original['itemId']
+                                        ],
+                                })
                             },
                         }
                     }}
