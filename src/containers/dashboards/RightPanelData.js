@@ -24,13 +24,13 @@ export default function RightPanelData(props) {
     const approveProject = () => {
         let operation = ''
         if (data[0].status === 1) {
-            operation = 'acceptAllotedProject'
+            operation = 'acceptAllottedProject'
         } else if (data[0].status === 2) {
             operation = 'submitProject'
         }
         const userId = localStorage.getItem('userId')
         let targetStatus = 0
-        if (operation === 'acceptAllotedProject') {
+        if (operation === 'acceptAllottedProject') {
             targetStatus = 2
         } else if (operation === 'submitProject') {
             targetStatus = 3
@@ -44,16 +44,16 @@ export default function RightPanelData(props) {
             },
         })
             .then(() => {
-                if (operation === 'acceptAllotedProject') {
+                if (operation === 'acceptAllottedProject') {
                     props.updateTopRightPanelProject([])
                 } else if (operation === 'submitProject') {
                     props.updateBottomRightPanelProject([])
                 }
                 props.getActiveProjects()
-                props.getAllotedProjects()
+                props.getAllottedProjects()
             })
             .catch(error => {
-                console.log(error.response)
+                console.log(error)
                 alert('Operation failed. Please try again.')
             })
     }

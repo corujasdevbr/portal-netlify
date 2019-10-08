@@ -11,24 +11,16 @@ import { ReactTableAdvancedCardForDashboard } from '../../../containers/ui/React
 
 import { connect } from 'react-redux'
 import {
-    getAllotedProjects,
+    getAllottedProjects,
     getActiveProjects,
     updateTopRightPanelProject,
     updateBottomRightPanelProject,
 } from '../../../redux/actions'
 
 class DefaultDashboard extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            topRightPanel: '',
-            bottomRightPanel: '',
-        }
-    }
-
     componentDidMount() {
         this.props.getActiveProjects()
-        this.props.getAllotedProjects()
+        this.props.getAllottedProjects()
     }
     render() {
         const { messages } = this.props.intl
@@ -46,7 +38,7 @@ class DefaultDashboard extends Component {
                 <Row className="mb-5">
                     <Colxx lg="12" xl="8" className="mb-4">
                         <ReactTableAdvancedCardForDashboard
-                            projects={this.props.allotedProjects}
+                            projects={this.props.allottedProjects}
                         />
                     </Colxx>
                     <Colxx lg="12" xl="4" className="mb-4">
@@ -56,7 +48,7 @@ class DefaultDashboard extends Component {
                                 this.props.updateTopRightPanelProject
                             }
                             getActiveProjects={this.props.getActiveProjects}
-                            getAllotedProjects={this.props.getAllotedProjects}
+                            getAllottedProjects={this.props.getAllottedProjects}
                             listData={this.props.rowInfo}
                             leftButtonText="accept"
                             rightButtonText="reject"
@@ -75,7 +67,7 @@ class DefaultDashboard extends Component {
                                 this.props.bottomRightPanelProject
                             }
                             getActiveProjects={this.props.getActiveProjects}
-                            getAllotedProjects={this.props.getAllotedProjects}
+                            getAllottedProjects={this.props.getAllottedProjects}
                             updateBottomRightPanelProject={
                                 this.props.updateBottomRightPanelProject
                             }
@@ -92,13 +84,13 @@ class DefaultDashboard extends Component {
 
 const mapStateToProps = ({ projects }) => {
     const {
-        allotedProjects,
+        allottedProjects,
         activeProjects,
         topRightPanelProject,
         bottomRightPanelProject,
     } = projects
     return {
-        allotedProjects,
+        allottedProjects,
         activeProjects,
         topRightPanelProject,
         bottomRightPanelProject,
@@ -109,7 +101,7 @@ export default injectIntl(
     connect(
         mapStateToProps,
         {
-            getAllotedProjects,
+            getAllottedProjects,
             getActiveProjects,
             updateTopRightPanelProject,
             updateBottomRightPanelProject,

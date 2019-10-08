@@ -1,8 +1,8 @@
 import {
-    GET_ALLOTED_PROJECTS,
+    GET_ALLOTTED_PROJECTS,
     GET_ACTIVE_PROJECTS,
     UPDATE_ACTIVE_PROJECTS,
-    UPDATE_ALLOTED_PROJECTS,
+    UPDATE_ALLOTTED_PROJECTS,
     UPDATE_TOP_RIGHT_PANEL_PROJECT,
     UPDATE_BOTTOM_RIGHT_PANEL_PROJECT,
     UPDATE_TOP_RIGHT_PANEL_PROJECT_MYPROJECTS,
@@ -10,7 +10,7 @@ import {
 
 const INIT_STATE = {
     activeProjects: [],
-    allotedProjects: [],
+    allottedProjects: [],
     topRightPanelProject: [],
     bottomRightPanelProject: [],
     topRightPanelProjectMyProjects: [],
@@ -18,10 +18,10 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
-        case GET_ALLOTED_PROJECTS:
+        case GET_ALLOTTED_PROJECTS:
             return { ...state }
-        case UPDATE_ALLOTED_PROJECTS:
-            return { ...state, allotedProjects: action.payload }
+        case UPDATE_ALLOTTED_PROJECTS:
+            return { ...state, allottedProjects: action.payload }
         case GET_ACTIVE_PROJECTS:
             return { ...state }
         case UPDATE_ACTIVE_PROJECTS:

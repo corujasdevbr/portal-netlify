@@ -91,10 +91,10 @@ const dataTableColumns = [
             let status = ''
             switch (props.value) {
                 case 0:
-                    status = 'Not alloted'
+                    status = 'Not allotted'
                     break
                 case 1:
-                    status = 'Alloted to writer'
+                    status = 'Allotted to writer'
                     break
                 case 2:
                     status = 'Accepted'

@@ -21,7 +21,7 @@ import DataTablePagination from '../../components/DatatablePagination'
 
 const dataTableColumns = [
     {
-        Header: 'Date',
+        Header: 'Overview',
         accessor: 'timestamp',
         Cell: props => {
             const options = {
@@ -74,7 +74,7 @@ export default function RightPanelDataForProject(props) {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        if (props.rightPanelProject) {
+        if (props.rightPanelProject.length !== 0) {
             setData(props.rightPanelProject[0].project)
         }
     }, [props.rightPanelProject])

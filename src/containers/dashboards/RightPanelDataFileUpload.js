@@ -25,13 +25,13 @@ export default function RightPanelDataFileUpload(props) {
     const approveProject = async () => {
         let operation = ''
         if (data[0].status === 1) {
-            operation = 'acceptAllotedProject'
+            operation = 'acceptAllottedProject'
         } else if (data[0].status === 2) {
             operation = 'submitProject'
         }
         const userId = localStorage.getItem('userId')
         let targetStatus = 0
-        if (operation === 'acceptAllotedProject') {
+        if (operation === 'acceptAllottedProject') {
             targetStatus = 2
         } else if (operation === 'submitProject') {
             targetStatus = 3
@@ -59,13 +59,13 @@ export default function RightPanelDataFileUpload(props) {
                     projectId: data[0].itemId,
                 },
             })
-            if (operation === 'acceptAllotedProject') {
+            if (operation === 'acceptAllottedProject') {
                 props.updateTopRightPanelProject([])
             } else if (operation === 'submitProject') {
                 props.updateBottomRightPanelProject([])
             }
             props.getActiveProjects()
-            props.getAllotedProjects()
+            props.getAllottedProjects()
         } catch (error) {
             console.log(error.response)
             alert('Operation failed. Please try again.')

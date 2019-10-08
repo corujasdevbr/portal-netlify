@@ -10,7 +10,10 @@ import ReactTable from 'react-table'
 import DataTablePagination from '../../components/DatatablePagination'
 
 import { connect } from 'react-redux'
-import { updateTopRightPanelProjectMyProjects } from '../../redux/actions'
+import {
+    updateTopRightPanelProjectMyProjects,
+    getUserDetails,
+} from '../../redux/actions'
 
 import { API } from 'aws-amplify'
 
@@ -76,6 +79,10 @@ const ReactTableAdvancedCardForProjectConnected = props => {
             organiseHistory(props.userDetails)
         }
     }, [props.userDetails])
+
+    useEffect(() => {
+        props.getUserDetails()
+    }, [])
 
     const organiseHistory = ({ projectHistory }) => {
         const projectIds = projectHistory ? Object.keys(projectHistory) : {}
@@ -145,5 +152,6 @@ export const ReactTableAdvancedCardForProject = connect(
     mapStateToProps,
     {
         updateTopRightPanelProjectMyProjects,
+        getUserDetails,
     }
 )(ReactTableAdvancedCardForProjectConnected)

@@ -1,8 +1,8 @@
 import { all, call, put, fork, takeEvery } from 'redux-saga/effects'
 import { API } from 'aws-amplify'
-import { GET_ALLOTED_PROJECTS, GET_ACTIVE_PROJECTS } from '../actions'
+import { GET_ALLOTTED_PROJECTS, GET_ACTIVE_PROJECTS } from '../actions'
 
-import { updateActiveProjects, updateAllotedProjects } from './actions'
+import { updateActiveProjects, updateAllottedProjects } from './actions'
 
 const getProjectsAsync = async (lr, ur) => {
     const id = localStorage.getItem('userId')
@@ -14,12 +14,12 @@ const getProjectsAsync = async (lr, ur) => {
     })
 }
 
-function* fetchAllotedProjects() {
+function* fetchAllottedProjects() {
     const lr = 1
     const ur = 1
     try {
         const projects = yield call(getProjectsAsync, lr, ur)
-        yield put(updateAllotedProjects(projects['Responses']['item-table']))
+        yield put(updateAllottedProjects(projects['Responses']['item-table']))
     } catch (error) {
         console.log({ error: error.response })
     }
@@ -41,6 +41,12 @@ function* fetchActiveProjects() {
         const projects = yield call(getProjectsAsync, lr, ur)
         yield put(updateActiveProjects(projects['Responses']['item-table']))
     } catch (error) {
+        if (
+            error.response.data.error.message ===
+            "1 validation error detected: Value '[]' at 'requestItems.item-table.member.keys' failed to satisfy constraint: Member must have length greater than or equal to 1"
+        ) {
+            yield put(updateActiveProjects([]))
+        }
         console.log({ error: error.response })
     }
 }
@@ -49,10 +55,10 @@ export function* watchGetActiveProjects() {
     yield takeEvery(GET_ACTIVE_PROJECTS, fetchActiveProjects)
 }
 
-export function* watchGetAllotedProjects() {
-    yield takeEvery(GET_ALLOTED_PROJECTS, fetchAllotedProjects)
+export function* watchGetAllottedProjects() {
+    yield takeEvery(GET_ALLOTTED_PROJECTS, fetchAllottedProjects)
 }
 
 export default function* rootSaga() {
-    yield all([fork(watchGetActiveProjects), fork(watchGetAllotedProjects)])
+    yield all([fork(watchGetActiveProjects), fork(watchGetAllottedProjects)])
 }
