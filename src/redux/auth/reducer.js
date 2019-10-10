@@ -5,7 +5,6 @@ import {
     REGISTER_USER_SUCCESS,
     LOGOUT_USER,
     SET_USER_DETAILS,
-    GET_USER_DETAILS,
 } from '../actions'
 
 const INIT_STATE = {
@@ -26,8 +25,6 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: false }
         case LOGOUT_USER:
             return { ...state, user: null }
-        case GET_USER_DETAILS:
-            return { ...state }
         case SET_USER_DETAILS:
             return { ...state, userDetails: action.payload }
         default:

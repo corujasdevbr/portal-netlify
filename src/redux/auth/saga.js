@@ -5,15 +5,19 @@ import {
     REGISTER_USER,
     LOGOUT_USER,
     GET_USER_DETAILS,
+    DELETE_USER,
 } from '../actions'
 
 import {
+    loginUser,
+    logoutUser,
     loginUserSuccess,
     registerUserSuccess,
     setUserDetails,
 } from './actions'
+import { resolve } from 'path'
 
-const loginWithEmailPasswordAsync = async (email, password) => {
+const loginWithEmailPasswordAsync = (email, password) => {
     return Auth.signIn(email, password)
 }
 
@@ -46,7 +50,10 @@ function* loginWithEmailPassword({ payload }) {
             email,
             password
         )
-
+        console.log(
+            'TCL: function*loginWithEmailPassword -> signInUserSession',
+            signInUserSession
+        )
         const userId = signInUserSession.idToken.payload['custom:userId']
         const userGroup = signInUserSession.idToken.payload['custom:group']
         localStorage.setItem('userId', userId)
@@ -64,7 +71,7 @@ function* loginWithEmailPassword({ payload }) {
             history.push('/')
         }
     } catch (error) {
-        console.log('login error : ', error.response)
+        console.log({ 'login error': error })
     }
 }
 
@@ -82,7 +89,7 @@ function* registerWithEmailPassword({ payload }) {
         )
         if (!registerUser.error) {
             yield put(registerUserSuccess())
-            loginWithEmailPassword(payload)
+            yield put(loginUser(payload.user, payload.history))
         } else {
             console.log('register failed :', registerUser.message)
         }
@@ -102,7 +109,31 @@ function* logout({ payload }) {
         history.push('/')
         localStorage.removeItem('userId')
         localStorage.removeItem('userGroup')
-    } catch (error) {}
+    } catch (error) {
+        console.log('register error : ', error)
+    }
+}
+
+const deleteUserRequest = user => {
+    return new Promise((resolve, reject) => {
+        user.deleteUser(error => {
+            if (error) {
+                return reject(error)
+            }
+            resolve()
+        })
+    })
+}
+
+function* deleteUser({ payload }) {
+    try {
+        const user = yield Auth.currentAuthenticatedUser()
+        yield call(deleteUserRequest, user)
+        alert('Successfully deleted user')
+        yield put(logoutUser(payload))
+    } catch (error) {
+        console.log({ error: error })
+    }
 }
 
 export function* watchRegisterUser() {
@@ -120,11 +151,16 @@ export function* watchUserDetails() {
     yield takeLatest(GET_USER_DETAILS, fetchUserDetails)
 }
 
+export function* watchDeleteUser() {
+    yield takeLatest(DELETE_USER, deleteUser)
+}
+
 export default function* rootSaga() {
     yield all([
         fork(watchLoginUser),
         fork(watchLogoutUser),
         fork(watchRegisterUser),
         fork(watchUserDetails),
+        fork(watchDeleteUser),
     ])
 }

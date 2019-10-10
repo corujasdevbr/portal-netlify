@@ -52,6 +52,7 @@ module.exports = {
   "user.reset-password-button": "RESET",
   "user.buy": "BUY",
   "user.username": "Username",
+  "user.confirmationCode": "Confirmation code",
 
   
   /* 03.Menu */
@@ -561,6 +562,7 @@ module.exports = {
   "forms.topical-promotional":"Switch to Select Promotional",
   "forms.upload-photo":"Upload Photo",
   "forms.add-article":"Add another Article",
+  "forms.deleteUser": "Delete account",
 
   /* 07.11.Form Components */
   "form-components.custom-inputs": "Custom Inputs",

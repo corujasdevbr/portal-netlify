@@ -18,20 +18,19 @@ class Register extends Component {
             password: '',
             group: '',
             confirmationCode: '',
-            authUser: null
+            authUser: null,
         }
     }
     onUserRegister() {
         if (this.state.email !== '' && this.state.password !== '') {
             this.props.registerUser(this.state, this.props.history)
-            this.props.loginUser(this.state, this.props.history)
         }
     }
 
     handleChange = event => {
         this.setState({
             ...this.state,
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value,
         })
     }
 
@@ -43,13 +42,13 @@ class Register extends Component {
                 attributes: {
                     'custom:group': this.state.group,
                     'custom:userId': uuid.v1(),
-                    'custom:stage': '0'
-                }
+                    'custom:stage': '0',
+                },
             })
 
             this.setState({
                 ...this.state,
-                authUser: authUser
+                authUser: authUser,
             })
         } catch (e) {
             if (e.code === 'UsernameExistsException') {
@@ -118,7 +117,7 @@ class Register extends Component {
                             value={this.state.confirmationCode}
                             onChange={this.handleChange}
                         />
-                        {/* <IntlMessages id="user.confirmationCode" /> */}
+                        <IntlMessages id="user.confirmationCode" />
                     </Label>
                     <div className="d-flex justify-content-end align-items-center">
                         <Button
@@ -176,6 +175,6 @@ export default connect(
     mapStateToProps,
     {
         registerUser,
-        loginUser
+        loginUser,
     }
 )(Register)

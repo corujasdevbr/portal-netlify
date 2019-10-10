@@ -16,10 +16,10 @@ import {
 } from 'reactstrap'
 import { Colxx, Separator } from '../../../components/common/CustomBootstrap'
 import Breadcrumb from '../../../containers/navs/Breadcrumb'
-import { getUserDetails } from '../../../redux/actions'
+import { getUserDetails, deleteUser } from '../../../redux/actions'
 
 const ProfilePages = props => {
-    // console.log(props.userDetails)
+    const { history } = props
     const [state, setState] = useState({
         userName: '',
         phone: '',
@@ -40,6 +40,10 @@ const ProfilePages = props => {
 
     const handleChange = event => {
         setState({ ...state, [event.target.name]: event.target.value })
+    }
+
+    const handleUserDelete = () => {
+        props.deleteUser(history)
     }
 
     const { messages } = props.intl
@@ -196,6 +200,12 @@ const ProfilePages = props => {
                                 <Button color="primary">
                                     <IntlMessages id="forms.submit" />
                                 </Button>
+                                <Button
+                                    color="danger"
+                                    onClick={handleUserDelete}
+                                >
+                                    <IntlMessages id="forms.deleteUser" />
+                                </Button>
                             </Form>
                         </CardBody>
                     </Card>
@@ -213,6 +223,6 @@ const mapStateToProps = ({ authUser }) => {
 export default injectIntl(
     connect(
         mapStateToProps,
-        { getUserDetails }
+        { getUserDetails, deleteUser }
     )(ProfilePages)
 )

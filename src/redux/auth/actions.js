@@ -6,6 +6,7 @@ import {
     REGISTER_USER_SUCCESS,
     GET_USER_DETAILS,
     SET_USER_DETAILS,
+    DELETE_USER,
 } from '../actions'
 
 export const loginUser = (user, history) => ({
@@ -37,4 +38,9 @@ export const getUserDetails = () => ({
 export const setUserDetails = userDetails => ({
     type: SET_USER_DETAILS,
     payload: userDetails,
+})
+
+export const deleteUser = history => ({
+    type: DELETE_USER,
+    payload: history,
 })
